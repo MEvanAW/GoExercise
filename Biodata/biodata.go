@@ -24,11 +24,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	if arg < 0 {
-		fmt.Println("Argument may not be negative. Valid argument range: 0-49")
-		return
-	}
-	if arg > 49 {
+	if arg < 0 || arg > 49 {
 		fmt.Println("Argument out of range. Valid argument range: 0-49")
 		return
 	}
