@@ -91,9 +91,13 @@ func main() {
 		fmt.Println("Pekerjaan", arg)
 		fmt.Println("Alasan", arg)
 	} else {
-		fmt.Println(temans[arg].nama)
-		fmt.Println(temans[arg].alamat)
-		fmt.Println(temans[arg].pekerjaan)
-		fmt.Println(temans[arg].alasan)
+		temans[arg].println()
 	}
+}
+
+func (t teman) println() {
+	fmt.Println(t.nama)
+	fmt.Println(t.alamat)
+	fmt.Println(t.pekerjaan)
+	fmt.Println(t.alasan)
 }
