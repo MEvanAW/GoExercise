@@ -4,15 +4,15 @@ import "time"
 
 type Item struct {
 	ItemId      uint   `gorm:"primaryKey" json:"item_id"`
-	ItemCode    string `json:"item_code" gorm:"not null;type:varchar(8192)"`
-	Description string
-	Quantity    uint `gorm:"not null"`
-	OrderId     uint `json:"order_id" gorm:"not null"`
+	ItemCode    string `gorm:"not null;type:varchar(8192)" json:"item_code"`
+	Description string `gorm:"type:varchar(8192)"`
+	Quantity    uint   `gorm:"not null"`
+	OrderId     uint   `gorm:"not null" json:"order_id"`
 }
 
 type Order struct {
-	OrderId      uint   `json:"order_id"`
-	CustomerName string `json:"customer_name"`
+	OrderId      uint   `gorm:"primaryKey" json:"order_id"`
+	CustomerName string `gorm:"type:varchar(8192)" json:"customer_name"`
 	Items        []Item
-	OrderedAt    time.Time `json:"ordered_at"`
+	OrderedAt    time.Time `gorm:"not null" json:"ordered_at"`
 }
