@@ -29,3 +29,7 @@ func StartDB() {
 	}
 	db.Debug().AutoMigrate(models.Order{}, models.Item{})
 }
+
+func GetDB() *gorm.DB {
+	return db
+}
