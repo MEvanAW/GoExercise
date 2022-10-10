@@ -124,3 +124,23 @@ func UpdateOrderById(id uint, customerName string, items []models.Item, orderedA
 	}
 	return err
 }
+
+func DeleteOrderById(id uint) error {
+	order, err := GetOrderById(id)
+	if err != nil {
+		return err
+	}
+	err = db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Model(&order).Association("Items").Clear(); err != nil {
+			return err
+		}
+		if err := tx.Delete(&order, id).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+	if err == nil {
+		log.Println("Order with id", id, "has been successfully deleted")
+	}
+	return err
+}

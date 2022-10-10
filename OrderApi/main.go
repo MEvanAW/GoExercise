@@ -3,10 +3,10 @@ package main
 import (
 	_ "fmt"
 	"log"
-	"time"
+	_ "time"
 
 	"excercise.id/orderapi/database"
-	"excercise.id/orderapi/models"
+	_ "excercise.id/orderapi/models"
 )
 
 func main() {
@@ -45,15 +45,20 @@ func main() {
 	// 	log.Println(err)
 	// }
 	// UPDATE
-	customerName := "Tyo"
-	items := []models.Item{
-		{
-			ItemCode: "UPDATEDCODE",
-			Quantity: 2,
-		},
-	}
-	orderedAt := time.Now()
-	err := database.UpdateOrderById(5, customerName, items, orderedAt)
+	// customerName := "Tyo"
+	// items := []models.Item{
+	// 	{
+	// 		ItemCode: "UPDATEDCODE",
+	// 		Quantity: 2,
+	// 	},
+	// }
+	// orderedAt := time.Now()
+	// err := database.UpdateOrderById(5, customerName, items, orderedAt)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+	// DELETE
+	err := database.DeleteOrderById(5)
 	if err != nil {
 		log.Println(err)
 	}
