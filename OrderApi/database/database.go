@@ -36,26 +36,19 @@ func GetDB() *gorm.DB {
 	return db
 }
 
-func CreateOrder(customerName string, items []models.Item, orderedAt ...time.Time) error {
+func CreateOrder(order *models.Order) error {
 	if db == nil {
 		return errors.New("DB hasn't started yet.")
 	}
-	var _orderedAt time.Time
-	if len(orderedAt) >= 1 {
-		_orderedAt = orderedAt[0]
-	} else {
-		_orderedAt = time.Now()
+	var zero time.Time
+	if order.OrderedAt == zero {
+		order.OrderedAt = time.Now()
 	}
-	Order := models.Order{
-		CustomerName: customerName,
-		Items:        items,
-		OrderedAt:    _orderedAt,
-	}
-	err := db.Create(&Order).Error
+	err := db.Create(order).Error
 	if err != nil {
 		return errors.New(fmt.Sprintf("Error creating order data: %s", err))
 	}
-	log.Println("New Order Data: ", Order)
+	log.Println("New Order Data: ", order)
 	return nil
 }
 

@@ -2,28 +2,34 @@ package main
 
 import (
 	_ "fmt"
-	"log"
+	_ "log"
 	_ "time"
 
 	"excercise.id/orderapi/database"
 	_ "excercise.id/orderapi/models"
+	"excercise.id/orderapi/routers"
 )
 
 func main() {
 	database.StartDB()
+	var port = ":8080"
+	routers.StartServer().Run(port)
 	// CREATE
-	// items := []models.Item{
-	// 	{
-	// 		ItemCode: "100217",
-	// 		Quantity: 4,
-	// 	},
-	// 	{
-	// 		ItemCode:    "106313",
-	// 		Description: "using promo",
-	// 		Quantity:    5,
+	// order := models.Order{
+	// 	CustomerName: "Tyo",
+	// 	Items: []models.Item{
+	// 		{
+	// 			ItemCode: "100217",
+	// 			Quantity: 4,
+	// 		},
+	// 		{
+	// 			ItemCode:    "106313",
+	// 			Description: "using promo",
+	// 			Quantity:    5,
+	// 		},
 	// 	},
 	// }
-	// err := database.CreateOrder("Tyo", items)
+	// err := database.CreateOrder(&order)
 	// if err != nil {
 	// 	log.Println(err)
 	// }
@@ -58,8 +64,8 @@ func main() {
 	// 	log.Println(err)
 	// }
 	// DELETE
-	err := database.DeleteOrderById(5)
-	if err != nil {
-		log.Println(err)
-	}
+	// err := database.DeleteOrderById(5)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 }
