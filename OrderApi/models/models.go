@@ -7,7 +7,7 @@ type Item struct {
 	ItemCode    string `gorm:"not null;type:varchar(8192)" json:"item_code"`
 	Description string `gorm:"type:varchar(8192)"`
 	Quantity    uint   `gorm:"not null"`
-	OrderID     uint   `gorm:"not null" json:"order_id"`
+	OrderID     uint   `json:"order_id"`
 }
 
 type Order struct {
