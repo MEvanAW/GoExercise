@@ -36,14 +36,20 @@ func GetDB() *gorm.DB {
 	return db
 }
 
-func CreateOrder(customerName string, items []models.Item) error {
+func CreateOrder(customerName string, items []models.Item, orderedAt ...time.Time) error {
 	if db == nil {
 		return errors.New("DB hasn't started yet.")
+	}
+	var _orderedAt time.Time
+	if len(orderedAt) >= 1 {
+		_orderedAt = orderedAt[0]
+	} else {
+		_orderedAt = time.Now()
 	}
 	Order := models.Order{
 		CustomerName: customerName,
 		Items:        items,
-		OrderedAt:    time.Now(),
+		OrderedAt:    _orderedAt,
 	}
 	err := db.Create(&Order).Error
 	if err != nil {
@@ -69,6 +75,9 @@ func GetOrderById(id uint) (models.Order, error) {
 }
 
 func GetOrderByIds(ids ...uint) ([]models.Order, error) {
+	if len(ids) == 0 {
+		return nil, nil
+	}
 	if len(ids) == 1 {
 		order, err := GetOrderById(ids[0])
 		return []models.Order{order}, err
