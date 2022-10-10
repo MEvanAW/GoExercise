@@ -46,7 +46,7 @@ func CreateOrder(order *models.Order) error {
 	}
 	err := db.Create(order).Error
 	if err != nil {
-		return errors.New(fmt.Sprintf("Error creating order data: %s", err))
+		return err
 	}
 	log.Println("New Order Data: ", order)
 	return nil
@@ -59,9 +59,6 @@ func GetOrderById(id uint) (models.Order, error) {
 	}
 	err := db.Model(&models.Order{}).Preload("Items").Take(&order, id).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return order, errors.New(fmt.Sprintf("Order with ID %d not found.", id))
-		}
 		return order, err
 	}
 	return order, nil

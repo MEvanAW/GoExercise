@@ -22,16 +22,20 @@ type Order struct {
 	OrderedAt    time.Time `gorm:"not null"`
 }
 
+var ErrItemCodeEmpty error = errors.New("ItemCode may not be empty.")
+
+var ErrCustomerNameEmpty error = errors.New("CustomerName may not be empty.")
+
 func (i *Item) BeforeCreate(tx *gorm.DB) (err error) {
 	if i.ItemCode == "" {
-		err = errors.New("ItemCode may not be empty.")
+		err = ErrItemCodeEmpty
 	}
 	return
 }
 
 func (o *Order) BeforeCreate(tx *gorm.DB) (err error) {
 	if o.CustomerName == "" {
-		err = errors.New("CustomerName may not be empty.")
+		err = ErrCustomerNameEmpty
 	}
 	return
 }
