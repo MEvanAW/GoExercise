@@ -51,15 +51,17 @@ func main() {
 	// 	log.Println(err)
 	// }
 	// UPDATE
-	// customerName := "Tyo"
-	// items := []models.Item{
-	// 	{
-	// 		ItemCode: "UPDATEDCODE",
-	// 		Quantity: 2,
+	// order := models.Order{
+	// 	CustomerName: "Tyo",
+	// 	Items: []models.Item{
+	// 		{
+	// 			ItemCode: "UPDATEDCODE",
+	// 			Quantity: 2,
+	// 		},
 	// 	},
+	// 	OrderedAt: time.Now(),
 	// }
-	// orderedAt := time.Now()
-	// err := database.UpdateOrderById(5, customerName, items, orderedAt)
+	// err := database.UpdateOrderById(5, &order)
 	// if err != nil {
 	// 	log.Println(err)
 	// }

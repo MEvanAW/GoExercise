@@ -86,31 +86,31 @@ func GetOrderByIds(ids ...uint) ([]models.Order, error) {
 	return orders, nil
 }
 
-func UpdateOrderById(id uint, customerName string, items []models.Item, orderedAt time.Time) error {
-	order, err := GetOrderById(id)
+func UpdateOrderById(id uint, argOrder *models.Order) error {
+	dbOrder, err := GetOrderById(id)
 	if err != nil {
 		return err
 	}
-	if customerName != "" {
-		order.CustomerName = customerName
+	if argOrder.CustomerName != "" {
+		dbOrder.CustomerName = argOrder.CustomerName
 	}
 	var temp time.Time
-	if orderedAt != temp {
-		order.OrderedAt = orderedAt
+	if argOrder.OrderedAt != temp {
+		dbOrder.OrderedAt = argOrder.OrderedAt
 	}
 	err = db.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Save(&order).Error; err != nil {
+		if err := tx.Save(&dbOrder).Error; err != nil {
 			return err
 		}
-		if items != nil {
-			if err := tx.Model(&order).Association("Items").Replace(items); err != nil {
+		if argOrder.Items != nil {
+			if err := tx.Model(&dbOrder).Association("Items").Replace(argOrder.Items); err != nil {
 				return err
 			}
 		}
 		return nil
 	})
 	if err == nil {
-		log.Printf("Updated order: %+v\n", order)
+		log.Printf("Updated order: %+v\n", dbOrder)
 	}
 	return err
 }

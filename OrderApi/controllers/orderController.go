@@ -66,10 +66,21 @@ func GetOrder(ctx *gin.Context) {
 
 func UpdateOrder(ctx *gin.Context) {
 	orderID := ctx.Param("orderID")
+	parsedID, err := strconv.ParseUint(orderID, 10, 0)
+	if err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
 	var updatedOrder models.Order
 	if err := ctx.ShouldBindJSON(&updatedOrder); err != nil {
 		ctx.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
-	_ = orderID
+	if err := database.UpdateOrderById(uint(parsedID), &updatedOrder); err != nil {
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": fmt.Sprintf("Order with id %d has been successfully updated.", parsedID),
+	})
 }
