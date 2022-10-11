@@ -1,73 +1,25 @@
 package main
 
 import (
-	_ "fmt"
-	_ "log"
-	_ "time"
-
 	"excercise.id/orderapi/database"
-	_ "excercise.id/orderapi/models"
+	_ "excercise.id/orderapi/docs"
 	"excercise.id/orderapi/routers"
 )
 
+// @title           Order API
+// @version         1.0
+// @description     API server for orders in "Scalable Webservice with Golang" course from Hacktiv8 × Kominfo.
+
+// @contact.name   Muhammad Evan Anindya Wahyuaji
+// @contact.email  m.evan.aw@google.com
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8080
+// @BasePath  /
 func main() {
 	database.StartDB()
 	var port = ":8080"
 	routers.StartServer().Run(port)
-	// CREATE
-	// order := models.Order{
-	// 	CustomerName: "Tyo",
-	// 	Items: []models.Item{
-	// 		{
-	// 			ItemCode: "100217",
-	// 			Quantity: 4,
-	// 		},
-	// 		{
-	// 			ItemCode:    "106313",
-	// 			Description: "using promo",
-	// 			Quantity:    5,
-	// 		},
-	// 	},
-	// }
-	// err := database.CreateOrder(&order)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-	// GET WHERE ID
-	// order, err := database.GetOrderById(5)
-	// if err == nil {
-	// 	log.Printf("Order data: %+v\n", order)
-	// } else {
-	// 	log.Println(err)
-	// }
-	// GET WHERE ID IN
-	// orders, err := database.GetOrderByIds([]uint{5, 6}...)
-	// if err == nil {
-	// 	log.Printf("Orders data:\n")
-	// 	for _, order := range orders {
-	// 		fmt.Printf("%+v\n", order)
-	// 	}
-	// } else {
-	// 	log.Println(err)
-	// }
-	// UPDATE
-	// order := models.Order{
-	// 	CustomerName: "Tyo",
-	// 	Items: []models.Item{
-	// 		{
-	// 			ItemCode: "UPDATEDCODE",
-	// 			Quantity: 2,
-	// 		},
-	// 	},
-	// 	OrderedAt: time.Now(),
-	// }
-	// err := database.UpdateOrderById(5, &order)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-	// DELETE
-	// err := database.DeleteOrderById(5)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
 }

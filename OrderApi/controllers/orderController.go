@@ -12,6 +12,19 @@ import (
 	"gorm.io/gorm"
 )
 
+var ErrNotFound error = errors.New("Order with the ID provided is not found.")
+
+// CreateOrder godoc
+// @Summary      Create an order
+// @Description  Create an order including its items, if provided.
+// @Tags         orders
+// @Accept       json
+// @Produce      json
+// @Param        order body models.Order true "JSON of the order to be made. Please remove both 'id' and 'orderID' line."
+// @Success      201  {object}  models.Order
+// @Failure      400  {object}  string
+// @Failure      500  {object}  nil
+// @Router       /orders [post]
 func CreateOrder(ctx *gin.Context) {
 	var newOrder models.Order
 	if err := ctx.ShouldBindJSON(&newOrder); err != nil {
@@ -40,6 +53,18 @@ func CreateOrder(ctx *gin.Context) {
 	})
 }
 
+// GetOrder godoc
+// @Summary      Get an order
+// @Description  get order by ID
+// @Tags         orders
+// @Accept       json
+// @Produce      json
+// @Param        id   path      uint  true  "orderID"
+// @Success      200  {object}  models.Order
+// @Failure      400  {object}  nil
+// @Failure      404  {object}  string
+// @Failure      500  {object}  nil
+// @Router       /orders/{orderID} [get]
 func GetOrder(ctx *gin.Context) {
 	orderID := ctx.Param("orderID")
 	var orderData models.Order
@@ -64,6 +89,19 @@ func GetOrder(ctx *gin.Context) {
 	})
 }
 
+// UpdateOrder godoc
+// @Summary      Update an order
+// @Description  update order by ID including its items. Previous items are discarded.
+// @Tags         orders
+// @Accept       json
+// @Produce      json
+// @Param        id   path      uint  true  "orderID"
+// @Param        order body models.Order true "JSON of the order to be made. Please remove the 'orderID' line."
+// @Success      200  {object}  string
+// @Failure      400  {object}  string
+// @Failure      404  {object}  string
+// @Failure      500  {object}  nil
+// @Router       /orders/{orderID} [put]
 func UpdateOrder(ctx *gin.Context) {
 	orderID := ctx.Param("orderID")
 	parsedID, err := strconv.ParseUint(orderID, 10, 0)
@@ -91,6 +129,18 @@ func UpdateOrder(ctx *gin.Context) {
 	})
 }
 
+// DeleteOrder godoc
+// @Summary      Delete an order
+// @Description  delete order by ID including its items.
+// @Tags         orders
+// @Accept       json
+// @Produce      json
+// @Param        id   path      uint  true  "orderID"
+// @Success      200  {object}  string
+// @Failure      400  {object}  nil
+// @Failure      404  {object}  string
+// @Failure      500  {object}  nil
+// @Router       /orders/{orderID} [delete]
 func DeleteOrder(ctx *gin.Context) {
 	orderID := ctx.Param("orderID")
 	parsedID, err := strconv.ParseUint(orderID, 10, 0)

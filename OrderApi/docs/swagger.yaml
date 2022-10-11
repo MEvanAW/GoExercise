@@ -1,0 +1,172 @@
+basePath: /
+definitions:
+  models.Item:
+    properties:
+      description:
+        example: Some description.
+        type: string
+      id:
+        example: 1
+        type: integer
+      itemCode:
+        example: SOMECODE
+        type: string
+      orderID:
+        example: 1
+        type: integer
+      quantity:
+        example: 1
+        type: integer
+    type: object
+  models.Order:
+    properties:
+      customerName:
+        example: Fulan
+        type: string
+      id:
+        example: 1
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/models.Item'
+        type: array
+      orderedAt:
+        example: "2019-11-09T21:21:46+00:00"
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: m.evan.aw@google.com
+    name: Muhammad Evan Anindya Wahyuaji
+  description: API server for orders in "Scalable Webservice with Golang" course from
+    Hacktiv8 × Kominfo.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Order API
+  version: "1.0"
+paths:
+  /orders:
+    post:
+      consumes:
+      - application/json
+      description: Create an order including its items, if provided.
+      parameters:
+      - description: JSON of the order to be made. Please remove both 'id' and 'orderID'
+          line.
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.Order'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+      summary: Create an order
+      tags:
+      - orders
+  /orders/{orderID}:
+    delete:
+      consumes:
+      - application/json
+      description: delete order by ID including its items.
+      parameters:
+      - description: orderID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+      summary: Delete an order
+      tags:
+      - orders
+    get:
+      consumes:
+      - application/json
+      description: get order by ID
+      parameters:
+      - description: orderID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+      summary: Get an order
+      tags:
+      - orders
+    put:
+      consumes:
+      - application/json
+      description: update order by ID including its items. Previous items are discarded.
+      parameters:
+      - description: orderID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: JSON of the order to be made. Please remove the 'orderID' line.
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+      summary: Update an order
+      tags:
+      - orders
+swagger: "2.0"
