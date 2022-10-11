@@ -57,7 +57,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controllers.ErrorH"
                         }
                     },
                     "500": {
@@ -101,7 +101,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controllers.ErrorH"
                         }
                     },
                     "500": {
@@ -143,19 +143,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controllers.SuccessH"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controllers.ErrorH"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controllers.ErrorH"
                         }
                     },
                     "500": {
@@ -188,16 +188,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controllers.SuccessH"
                         }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorH"
+                        }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controllers.ErrorH"
                         }
                     },
                     "500": {
@@ -208,6 +211,24 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controllers.ErrorH": {
+            "type": "object",
+            "properties": {
+                "error_message": {
+                    "type": "string",
+                    "example": "The error is explained here."
+                }
+            }
+        },
+        "controllers.SuccessH": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Operation successfull."
+                }
+            }
+        },
         "models.Item": {
             "type": "object",
             "properties": {

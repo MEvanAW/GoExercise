@@ -12,6 +12,14 @@ import (
 	"gorm.io/gorm"
 )
 
+type ErrorH struct {
+	ErrorMessage string `json:"error_message" example:"The error is explained here."`
+}
+
+type SuccessH struct {
+	Message string `example:"Operation successfull."`
+}
+
 var ErrNotFound error = errors.New("Order with the ID provided is not found.")
 
 // CreateOrder godoc
@@ -22,7 +30,7 @@ var ErrNotFound error = errors.New("Order with the ID provided is not found.")
 // @Produce      json
 // @Param        order body models.OrderBody true "JSON of the order to be made."
 // @Success      201  {object}  models.Order
-// @Failure      400  {object}  string
+// @Failure      400  {object}  ErrorH
 // @Failure      500  {object}  nil
 // @Router       /orders [post]
 func CreateOrder(ctx *gin.Context) {
@@ -62,7 +70,7 @@ func CreateOrder(ctx *gin.Context) {
 // @Param        orderID path uint true "ID number of the order"
 // @Success      200  {object}  models.Order
 // @Failure      400  {object}  nil
-// @Failure      404  {object}  string
+// @Failure      404  {object}  ErrorH
 // @Failure      500  {object}  nil
 // @Router       /orders/{orderID} [get]
 func GetOrder(ctx *gin.Context) {
@@ -97,9 +105,9 @@ func GetOrder(ctx *gin.Context) {
 // @Produce      json
 // @Param        orderID path uint true "ID number of the order to be updated."
 // @Param        order body models.OrderBody true "JSON of the order to be updated."
-// @Success      200  {object}  string
-// @Failure      400  {object}  string
-// @Failure      404  {object}  string
+// @Success      200  {object}  SuccessH
+// @Failure      400  {object}  ErrorH
+// @Failure      404  {object}  ErrorH
 // @Failure      500  {object}  nil
 // @Router       /orders/{orderID} [put]
 func UpdateOrder(ctx *gin.Context) {
@@ -136,9 +144,9 @@ func UpdateOrder(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        orderID path uint true "ID number of the order to be deleted."
-// @Success      200  {object}  string
-// @Failure      400  {object}  nil
-// @Failure      404  {object}  string
+// @Success      200  {object}  SuccessH
+// @Failure      400  {object}  ErrorH
+// @Failure      404  {object}  ErrorH
 // @Failure      500  {object}  nil
 // @Router       /orders/{orderID} [delete]
 func DeleteOrder(ctx *gin.Context) {

@@ -1,5 +1,17 @@
 basePath: /
 definitions:
+  controllers.ErrorH:
+    properties:
+      error_message:
+        example: The error is explained here.
+        type: string
+    type: object
+  controllers.SuccessH:
+    properties:
+      message:
+        example: Operation successfull.
+        type: string
+    type: object
   models.Item:
     properties:
       description:
@@ -94,7 +106,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: string
+            $ref: '#/definitions/controllers.ErrorH'
         "500":
           description: Internal Server Error
       summary: Create an order
@@ -117,13 +129,15 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/controllers.SuccessH'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorH'
         "404":
           description: Not Found
           schema:
-            type: string
+            $ref: '#/definitions/controllers.ErrorH'
         "500":
           description: Internal Server Error
       summary: Delete an order
@@ -151,7 +165,7 @@ paths:
         "404":
           description: Not Found
           schema:
-            type: string
+            $ref: '#/definitions/controllers.ErrorH'
         "500":
           description: Internal Server Error
       summary: Get an order
@@ -179,15 +193,15 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/controllers.SuccessH'
         "400":
           description: Bad Request
           schema:
-            type: string
+            $ref: '#/definitions/controllers.ErrorH'
         "404":
           description: Not Found
           schema:
-            type: string
+            $ref: '#/definitions/controllers.ErrorH'
         "500":
           description: Internal Server Error
       summary: Update an order
