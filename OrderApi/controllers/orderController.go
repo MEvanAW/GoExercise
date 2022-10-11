@@ -52,7 +52,7 @@ func GetOrder(ctx *gin.Context) {
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-				"error_message": fmt.Sprintf("Order with ID %d not found.", parsedID),
+				"error_message": fmt.Sprintf("Order with ID %d is not found.", parsedID),
 			})
 			return
 		}
@@ -77,10 +77,38 @@ func UpdateOrder(ctx *gin.Context) {
 		return
 	}
 	if err := database.UpdateOrderById(uint(parsedID), &updatedOrder); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"error_message": fmt.Sprintf("Order with ID %d is not found.", parsedID),
+			})
+			return
+		}
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": fmt.Sprintf("Order with id %d has been successfully updated.", parsedID),
+	})
+}
+
+func DeleteOrder(ctx *gin.Context) {
+	orderID := ctx.Param("orderID")
+	parsedID, err := strconv.ParseUint(orderID, 10, 0)
+	if err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	if err := database.DeleteOrderById(uint(parsedID)); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"error_message": fmt.Sprintf("Order with ID %d is not found.", parsedID),
+			})
+			return
+		}
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": fmt.Sprintf("Order with id %d has been successfully deleted.", parsedID),
 	})
 }

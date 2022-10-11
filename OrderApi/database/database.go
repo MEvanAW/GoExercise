@@ -22,7 +22,7 @@ var (
 
 func StartDB() {
 	var password string
-	fmt.Print("Enter db password: ")
+	fmt.Println("Enter db password (not hidden, be careful of shoulder surfing)")
 	fmt.Scanln(&password)
 	config := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", host, user, password, dbName, dbPort)
 	db, err = gorm.Open(postgres.Open(config), &gorm.Config{})
