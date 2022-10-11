@@ -82,8 +82,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "orderID",
-                        "name": "id",
+                        "description": "ID number of the order",
+                        "name": "orderID",
                         "in": "path",
                         "required": true
                     }
@@ -124,13 +124,13 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "orderID",
-                        "name": "id",
+                        "description": "ID number of the order to be updated.",
+                        "name": "orderID",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "JSON of the order to be made. Please remove the 'orderID' line.",
+                        "description": "JSON of the order to be updated. Please remove both 'id' and 'orderID' line.",
                         "name": "order",
                         "in": "body",
                         "required": true,
@@ -178,8 +178,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "orderID",
-                        "name": "id",
+                        "description": "ID number of the order to be deleted.",
+                        "name": "orderID",
                         "in": "path",
                         "required": true
                     }

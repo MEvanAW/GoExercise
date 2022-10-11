@@ -59,7 +59,7 @@ func CreateOrder(ctx *gin.Context) {
 // @Tags         orders
 // @Accept       json
 // @Produce      json
-// @Param        id   path      uint  true  "orderID"
+// @Param        orderID path uint true "ID number of the order"
 // @Success      200  {object}  models.Order
 // @Failure      400  {object}  nil
 // @Failure      404  {object}  string
@@ -95,8 +95,8 @@ func GetOrder(ctx *gin.Context) {
 // @Tags         orders
 // @Accept       json
 // @Produce      json
-// @Param        id   path      uint  true  "orderID"
-// @Param        order body models.Order true "JSON of the order to be made. Please remove the 'orderID' line."
+// @Param        orderID path uint true "ID number of the order to be updated."
+// @Param        order body models.Order true "JSON of the order to be updated. Please remove both 'id' and 'orderID' line."
 // @Success      200  {object}  string
 // @Failure      400  {object}  string
 // @Failure      404  {object}  string
@@ -135,7 +135,7 @@ func UpdateOrder(ctx *gin.Context) {
 // @Tags         orders
 // @Accept       json
 // @Produce      json
-// @Param        id   path      uint  true  "orderID"
+// @Param        orderID path uint true "ID number of the order to be deleted."
 // @Success      200  {object}  string
 // @Failure      400  {object}  nil
 // @Failure      404  {object}  string

@@ -82,9 +82,9 @@ paths:
       - application/json
       description: delete order by ID including its items.
       parameters:
-      - description: orderID
+      - description: ID number of the order to be deleted.
         in: path
-        name: id
+        name: orderID
         required: true
         type: integer
       produces:
@@ -110,9 +110,9 @@ paths:
       - application/json
       description: get order by ID
       parameters:
-      - description: orderID
+      - description: ID number of the order
         in: path
-        name: id
+        name: orderID
         required: true
         type: integer
       produces:
@@ -138,12 +138,13 @@ paths:
       - application/json
       description: update order by ID including its items. Previous items are discarded.
       parameters:
-      - description: orderID
+      - description: ID number of the order to be updated.
         in: path
-        name: id
+        name: orderID
         required: true
         type: integer
-      - description: JSON of the order to be made. Please remove the 'orderID' line.
+      - description: JSON of the order to be updated. Please remove both 'id' and
+          'orderID' line.
         in: body
         name: order
         required: true
