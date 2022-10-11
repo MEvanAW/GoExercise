@@ -15,11 +15,23 @@ type Item struct {
 	OrderID     uint   `example:"1"`
 }
 
+type ItemBody struct {
+	ItemCode    string `example:"SOMECODE"`
+	Description string `example:"Some description."`
+	Quantity    uint   `example:"1"`
+}
+
 type Order struct {
 	ID           uint   `gorm:"primaryKey" example:"1"`
 	CustomerName string `gorm:"type:varchar(8192)" example:"Fulan"`
 	Items        []Item
 	OrderedAt    time.Time `gorm:"not null" example:"2019-11-09T21:21:46+00:00"`
+}
+
+type OrderBody struct {
+	CustomerName string `example:"Fulan"`
+	Items        []ItemBody
+	OrderedAt    time.Time `example:"2019-11-09T21:21:46+00:00"`
 }
 
 var ErrItemCodeEmpty error = errors.New("ItemCode may not be empty.")

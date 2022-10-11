@@ -38,12 +38,12 @@ const docTemplate = `{
                 "summary": "Create an order",
                 "parameters": [
                     {
-                        "description": "JSON of the order to be made. Please remove both 'id' and 'orderID' line.",
+                        "description": "JSON of the order to be made.",
                         "name": "order",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Order"
+                            "$ref": "#/definitions/models.OrderBody"
                         }
                     }
                 ],
@@ -130,12 +130,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "JSON of the order to be updated. Please remove both 'id' and 'orderID' line.",
+                        "description": "JSON of the order to be updated.",
                         "name": "order",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Order"
+                            "$ref": "#/definitions/models.OrderBody"
                         }
                     }
                 ],
@@ -233,6 +233,23 @@ const docTemplate = `{
                 }
             }
         },
+        "models.ItemBody": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "Some description."
+                },
+                "itemCode": {
+                    "type": "string",
+                    "example": "SOMECODE"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
         "models.Order": {
             "type": "object",
             "properties": {
@@ -248,6 +265,25 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Item"
+                    }
+                },
+                "orderedAt": {
+                    "type": "string",
+                    "example": "2019-11-09T21:21:46+00:00"
+                }
+            }
+        },
+        "models.OrderBody": {
+            "type": "object",
+            "properties": {
+                "customerName": {
+                    "type": "string",
+                    "example": "Fulan"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.ItemBody"
                     }
                 },
                 "orderedAt": {

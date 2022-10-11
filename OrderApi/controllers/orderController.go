@@ -20,7 +20,7 @@ var ErrNotFound error = errors.New("Order with the ID provided is not found.")
 // @Tags         orders
 // @Accept       json
 // @Produce      json
-// @Param        order body models.Order true "JSON of the order to be made. Please remove both 'id' and 'orderID' line."
+// @Param        order body models.OrderBody true "JSON of the order to be made."
 // @Success      201  {object}  models.Order
 // @Failure      400  {object}  string
 // @Failure      500  {object}  nil
@@ -96,7 +96,7 @@ func GetOrder(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        orderID path uint true "ID number of the order to be updated."
-// @Param        order body models.Order true "JSON of the order to be updated. Please remove both 'id' and 'orderID' line."
+// @Param        order body models.OrderBody true "JSON of the order to be updated."
 // @Success      200  {object}  string
 // @Failure      400  {object}  string
 // @Failure      404  {object}  string
