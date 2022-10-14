@@ -64,7 +64,24 @@ func main() {
 
 func jsonUpdate() {
 	for {
-		water, wind := rand.Intn(100)+1, rand.Intn(100)+1
+		waterStatus, windStatus := rand.Intn(3), rand.Intn(3)
+		var water, wind int
+		switch waterStatus {
+		case 0:
+			water = rand.Intn(5) + 1
+		case 1:
+			water = rand.Intn(3) + 6
+		default:
+			water = rand.Intn(92) + 9
+		}
+		switch windStatus {
+		case 0:
+			wind = rand.Intn(6) + 1
+		case 1:
+			wind = rand.Intn(9) + 7
+		default:
+			wind = rand.Intn(85) + 16
+		}
 		jsonString := fmt.Sprintf(`{
 	"status": {
 		"water": %d,
