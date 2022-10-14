@@ -8,8 +8,8 @@
             <h2 class="card-title">Water</h2>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">{{ .water }} meter(s)</li>
-            <li class="list-group-item">{{ .waterStatus }}</li>
+            <li class="list-group-item {{ .waterClass }}">Height: {{ .water }} meter(s)</li>
+            <li class="list-group-item {{ .waterClass }}">Status: {{ .waterStatus }}</li>
         </ul>
     </div>
     <div class="card">
@@ -17,8 +17,8 @@
             <h2 class="card-title">Wind</h2>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">{{ .wind }} m/s</li>
-            <li class="list-group-item">{{ .windStatus }}</li>
+            <li class="list-group-item {{ .windClass }}">Speed: {{ .wind }} m/s</li>
+            <li class="list-group-item {{ .windClass }}">Status: {{ .windStatus }}</li>
         </ul>
     </div>
 </div>

@@ -35,29 +35,36 @@ func main() {
 		var status models.Status
 		json.Unmarshal(bytes, &status)
 		log.Printf("in router: %+v\n", status)
-		waterStatus := ""
-		windStatus := ""
+		waterStatus, windStatus, waterClass, windClass := "", "", "", ""
 		switch {
 		case status.Status.Water <= 5:
-			waterStatus = "safe"
+			waterStatus = "Safe"
+			waterClass = "list-group-item-success"
 		case status.Status.Water <= 8:
-			waterStatus = "alert"
+			waterStatus = "Alert"
+			waterClass = "list-group-item-warning"
 		default:
-			waterStatus = "danger"
+			waterStatus = "Danger"
+			waterClass = "list-group-item-danger"
 		}
 		switch {
 		case status.Status.Wind <= 6:
-			windStatus = "safe"
+			windStatus = "Safe"
+			windClass = "list-group-item-success"
 		case status.Status.Wind <= 15:
-			windStatus = "alert"
+			windStatus = "Alert"
+			windClass = "list-group-item-warning"
 		default:
-			windStatus = "danger"
+			windStatus = "Danger"
+			windClass = "list-group-item-danger"
 		}
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"water":       status.Status.Water,
 			"waterStatus": waterStatus,
+			"waterClass":  waterClass,
 			"wind":        status.Status.Wind,
 			"windStatus":  windStatus,
+			"windClass":   windClass,
 		})
 	})
 	router.Run("localhost:8080")
