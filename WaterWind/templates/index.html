@@ -1,7 +1,15 @@
 {{template "header.html"}}
 <h1 class="title">
-	INDEX PAGE
+	Water and Wind Indicator
 </h1>
-<p>water: {{ .water }}</p>
-<p>wind: {{ .wind }}</p>
+<ul>
+    <li>Water<ul>
+        <li>{{ .water }} meter(s)</li>
+        <li>{{ .waterStatus }}</li>
+    </ul></li>
+    <li>Wind<ul>
+        <li>{{ .wind }} m/s</li>
+        <li>{{ .windStatus }}</li>
+    </ul></li>
+</ul>
 {{template "footer.html"}}
