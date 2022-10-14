@@ -17,6 +17,7 @@ import (
 func main() {
 	go jsonUpdate()
 	router := gin.Default()
+	router.Static("/assets", "./assets")
 	router.LoadHTMLGlob("templates/*.html")
 	router.GET("/", func(c *gin.Context) {
 		jsonFile, err := os.Open("waterwind.json")

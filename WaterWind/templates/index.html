@@ -1,17 +1,27 @@
 {{template "header.html"}}
-<h1 class="title">
-	Water and Wind Indicator
-</h1>
-<ul>
-    <li>Water<ul>
-        <li>{{ .water }} meter(s)</li>
-        <li>{{ .waterStatus }}</li>
-    </ul></li>
-    <li>Wind<ul>
-        <li>{{ .wind }} m/s</li>
-        <li>{{ .windStatus }}</li>
-    </ul></li>
-</ul>
+<div class="text-center">
+    <h1 class="display-5 text-primary">Water and Wind Indicator</h1>
+</div>
+<div class="card-group">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Water</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ .water }} meter(s)</li>
+            <li class="list-group-item">{{ .waterStatus }}</li>
+        </ul>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Wind</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ .wind }} m/s</li>
+            <li class="list-group-item">{{ .windStatus }}</li>
+        </ul>
+    </div>
+</div>
 <script type="text/javascript">
     window.setTimeout(function(){ document.location.reload(true); }, 15000);
 </script>
