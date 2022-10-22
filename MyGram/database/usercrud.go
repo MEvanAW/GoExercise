@@ -5,24 +5,33 @@ import (
 	"log"
 	"time"
 
+	"example.id/mygram/dto"
 	"example.id/mygram/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
-func CreateUser(user *models.User) error {
+func CreateUser(userRegister *dto.UserRegister) error {
 	if db == nil {
 		return errors.New("DB hasn't started yet.")
 	}
-	var zero time.Time
-	if user.CreatedAt == zero {
-		user.CreatedAt = time.Now()
-	}
-	if user.UpdatedAt == zero {
-		user.UpdatedAt = time.Now()
-	}
-	err = db.Create(user).Error
+	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(userRegister.Password), 4)
 	if err != nil {
 		return err
 	}
-	log.Println("User Created:", user)
+	newUser := models.User{
+		Username: userRegister.Username,
+		Email:    userRegister.Email,
+		Password: string(passwordBytes),
+		Age:      userRegister.Age,
+		Model: models.Model{
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+	}
+	err = db.Create(&newUser).Error
+	if err != nil {
+		return err
+	}
+	log.Println("User Created:", newUser)
 	return nil
 }

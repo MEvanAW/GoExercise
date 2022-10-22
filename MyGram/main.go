@@ -4,25 +4,19 @@ import (
 	"log"
 
 	"example.id/mygram/database"
-	"example.id/mygram/models"
-	"golang.org/x/crypto/bcrypt"
+	"example.id/mygram/dto"
 )
 
 func main() {
 	database.StartDB()
 	// CREATE USER
-	bytes, err := bcrypt.GenerateFromPassword([]byte("klaten"), 4)
-	if err != nil {
-		log.Println(err.Error())
-		return
-	}
-	newUser := models.User{
-		Username: "evan60031",
-		Email:    "evan60031@gmail.com",
-		Password: string(bytes),
+	userRegister := dto.UserRegister{
+		Username: "fandi",
+		Email:    "fandi@gmail.com",
+		Password: "qwerty",
 		Age:      23,
 	}
-	err = database.CreateUser(&newUser)
+	err := database.CreateUser(&userRegister)
 	if err != nil {
 		log.Println(err.Error())
 	}
