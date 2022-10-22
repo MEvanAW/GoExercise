@@ -1,7 +1,6 @@
 package database
 
 import (
-	"errors"
 	"log"
 	"time"
 
@@ -9,8 +8,6 @@ import (
 	"example.id/mygram/models"
 	"golang.org/x/crypto/bcrypt"
 )
-
-var ErrDbNotStarted error = errors.New("DB hasn't started yet.")
 
 func CreateUser(userRegister *dto.UserRegister) error {
 	if db == nil {
@@ -49,6 +46,7 @@ func UpdateUser(id uint, userDto *dto.UserUpdate) error {
 	if userDto.Username != "" {
 		user.Username = userDto.Username
 	}
+	user.UpdatedAt = time.Now()
 	err = db.Save(&user).Error
 	if err != nil {
 		return err

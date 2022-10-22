@@ -1,6 +1,7 @@
 package database
 
 import (
+	"errors"
 	"fmt"
 	"log"
 
@@ -10,12 +11,13 @@ import (
 )
 
 var (
-	host   = "localhost"
-	dbUser = "postgres"
-	dbPort = "5432"
-	dbName = "mygram"
-	db     *gorm.DB
-	err    error
+	host            = "localhost"
+	dbUser          = "postgres"
+	dbPort          = "5432"
+	dbName          = "mygram"
+	db              *gorm.DB
+	err             error
+	ErrDbNotStarted error = errors.New("DB hasn't started yet.")
 )
 
 func StartDB() {
