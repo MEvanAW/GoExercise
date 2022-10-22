@@ -10,23 +10,27 @@ import (
 func main() {
 	database.StartDB()
 	// CREATE USER
-	// userRegister := dto.UserRegister{
-	// 	Username: "fandi",
-	// 	Email:    "fandi@gmail.com",
-	// 	Password: "qwerty",
-	// 	Age:      23,
+	userRegister := dto.UserRegister{
+		Username: "naufal",
+		Email:    "naufal@gmail.com",
+		Password: "aduhlali",
+		Age:      23,
+	}
+	err := database.CreateUser(&userRegister)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	// UPDATE USER
+	// userUpdate := dto.UserUpdate{
+	// 	Username: "evan60031",
+	// 	Email:    "evan60031@gmail.com",
 	// }
-	// err := database.CreateUser(&userRegister)
+	// err := database.UpdateUser(2, &userUpdate)
 	// if err != nil {
 	// 	log.Println(err.Error())
 	// }
-	// UPDATE USER
-	userUpdate := dto.UserUpdate{
-		Username: "evan60031",
-		Email:    "evan60031@gmail.com",
-	}
-	err := database.UpdateUser(2, &userUpdate)
-	if err != nil {
+	// DELETE USER
+	if err := database.DeleteUserById(3); err != nil {
 		log.Println(err.Error())
 	}
 }

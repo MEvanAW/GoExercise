@@ -57,6 +57,18 @@ func UpdateUser(id uint, userDto *dto.UserUpdate) error {
 	return nil
 }
 
+func DeleteUserById(id uint) error {
+	user, err := getUserWithoutPreload(id)
+	if err != nil {
+		return err
+	}
+	if err := db.Delete(&user, id).Error; err != nil {
+		return err
+	}
+	log.Println("User with id", id, "has been successfully deleted.")
+	return nil
+}
+
 func getUserWithoutPreload(id uint) (models.User, error) {
 	user := models.User{}
 	if db == nil {
