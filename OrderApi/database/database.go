@@ -12,12 +12,13 @@ import (
 )
 
 var (
-	host   = "localhost"
-	user   = "postgres"
-	dbPort = "5432"
-	dbName = "order-api"
-	db     *gorm.DB
-	err    error
+	host               = "localhost"
+	user               = "postgres"
+	dbPort             = "5432"
+	dbName             = "order-api"
+	db                 *gorm.DB
+	err                error
+	ErrOrderSliceEmpty error = errors.New("No order in database.")
 )
 
 func StartDB() {
@@ -82,6 +83,21 @@ func GetOrderByIds(ids ...uint) ([]models.Order, error) {
 	}
 	if len(orders) == 0 {
 		return nil, errors.New("No ID match.")
+	}
+	return orders, nil
+}
+
+func GetAllOrder() ([]models.Order, error) {
+	if db == nil {
+		return nil, errors.New("DB hasn't started yet.")
+	}
+	orders := make([]models.Order, 1)
+	err := db.Model(&models.Order{}).Preload("Items").Find(&orders).Error
+	if err != nil {
+		return nil, err
+	}
+	if len(orders) == 0 {
+		return nil, ErrOrderSliceEmpty
 	}
 	return orders, nil
 }

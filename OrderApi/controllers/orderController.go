@@ -97,6 +97,33 @@ func GetOrder(ctx *gin.Context) {
 	})
 }
 
+// GetOrder godoc
+// @Summary      Get all orders
+// @Description  get all orders
+// @Tags         orders
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  []models.Order
+// @Failure      404  {object}  ErrorH
+// @Failure      500  {object}  nil
+// @Router       /orders [get]
+func GetAllOrder(ctx *gin.Context) {
+	orders, err := database.GetAllOrder()
+	if err != nil {
+		if errors.Is(err, database.ErrOrderSliceEmpty) {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"error_message": err.Error(),
+			})
+			return
+		}
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"orders": orders,
+	})
+}
+
 // UpdateOrder godoc
 // @Summary      Update an order
 // @Description  update order by ID including its items. Previous items are discarded.

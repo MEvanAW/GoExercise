@@ -11,6 +11,7 @@ func StartServer() *gin.Engine {
 	router := gin.Default()
 	router.POST("/orders", controllers.CreateOrder)
 	router.GET("/orders/:orderID", controllers.GetOrder)
+	router.GET("/orders", controllers.GetAllOrder)
 	router.PUT("/orders/:orderID", controllers.UpdateOrder)
 	router.DELETE("/orders/:orderID", controllers.DeleteOrder)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
