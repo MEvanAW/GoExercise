@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"example.id/mygram/database"
-	_ "example.id/mygram/dto"
+	"example.id/mygram/dto"
 )
 
 func main() {
@@ -25,9 +25,11 @@ func main() {
 	// 	Username: "evan60031",
 	// 	Email:    "evan60031@gmail.com",
 	// }
-	// err := database.UpdateUser(2, &userUpdate)
+	// updatedUser, err := database.UpdateUser(2, &userUpdate)
 	// if err != nil {
 	// 	log.Println(err.Error())
+	// } else {
+	//  log.Printf("%+v\n", updatedUser)
 	// }
 	// DELETE USER
 	// if err := database.DeleteUserById(3); err != nil {
@@ -35,18 +37,30 @@ func main() {
 	// }
 	// CREATE PHOTO
 	// photoDto := dto.Photo{
-	// 	Title:    "Linkedin Photo Profile",
-	// 	Caption:  "UI/UX Designer at PT Javan Cipta Solusi.",
-	// 	PhotoUrl: "https://media-exp1.licdn.com/dms/image/C5603AQH5R3vCtuyvUg/profile-displayphoto-shrink_400_400/0/1622972541475?e=1672272000&v=beta&t=139NJp5PNckox4pix6JynXuAg9QqGgomYkYNeNLGOtY",
+	// 	Title:    "Will be updated.",
+	// 	Caption:  "Will be updated.",
+	// 	PhotoUrl: "https://will.be.com/updated/image/C5/profile-displayphoto-shrink_400/0/5?e=1&v=beta&t=1",
 	// }
 	// if err := database.CreatePhoto(1, &photoDto); err != nil {
 	// 	log.Println(err.Error())
 	// }
 	// GET ALL PHOTO
-	photos, err := database.GetAllPhotos()
+	// photos, err := database.GetAllPhotos()
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// } else {
+	// 	log.Printf("%+v\n", photos)
+	// }
+	// UPDATE A PHOTO
+	photoDto := dto.Photo{
+		Title:    "Updated!",
+		Caption:  "Updated!",
+		PhotoUrl: "https://updated.be.com/image/C?e=1",
+	}
+	updatedAt, err := database.UpdatePhoto(5, &photoDto)
 	if err != nil {
 		log.Println(err.Error())
 	} else {
-		log.Printf("%+v\n", photos)
+		log.Printf("%+v at %v", photoDto, updatedAt)
 	}
 }

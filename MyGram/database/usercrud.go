@@ -35,10 +35,10 @@ func CreateUser(userRegister *dto.UserRegister) error {
 	return nil
 }
 
-func UpdateUser(id uint, userDto *dto.UserUpdate) error {
+func UpdateUser(id uint, userDto *dto.UserUpdate) (models.User, error) {
 	user, err := getUserWithoutPreload(id)
 	if err != nil {
-		return err
+		return user, err
 	}
 	if userDto.Email != "" {
 		user.Email = userDto.Email
@@ -48,11 +48,8 @@ func UpdateUser(id uint, userDto *dto.UserUpdate) error {
 	}
 	user.UpdatedAt = time.Now()
 	err = db.Save(&user).Error
-	if err != nil {
-		return err
-	}
 	log.Printf("User Updated: %+v\n", user)
-	return nil
+	return user, err
 }
 
 func DeleteUserById(id uint) error {
