@@ -12,13 +12,14 @@ import (
 
 var ErrPasswordMismatch = bcrypt.ErrMismatchedHashAndPassword
 
-func CreateUser(userRegister *dto.UserRegister) error {
+func CreateUser(userRegister *dto.UserRegister) (ID uint, err error) {
 	if db == nil {
-		return ErrDbNotStarted
+		err = ErrDbNotStarted
+		return
 	}
 	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(userRegister.Password), 4)
 	if err != nil {
-		return err
+		return
 	}
 	newUser := models.User{
 		Username: userRegister.Username,
@@ -32,10 +33,11 @@ func CreateUser(userRegister *dto.UserRegister) error {
 	}
 	err = db.Create(&newUser).Error
 	if err != nil {
-		return err
+		return
 	}
+	ID = newUser.ID
 	log.Println("User Created:", newUser)
-	return nil
+	return
 }
 
 func UpdateUser(id uint, userDto *dto.UserUpdate) (models.User, error) {

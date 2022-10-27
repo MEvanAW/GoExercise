@@ -34,7 +34,7 @@ func RegisterUser(ctx *gin.Context) {
 		validationAbort(err, ctx)
 		return
 	}
-	err := database.CreateUser(&newUser)
+	ID, err := database.CreateUser(&newUser)
 	if err != nil {
 		var perr *pgconn.PgError
 		if ok := errors.As(err, &perr); ok {
@@ -48,7 +48,12 @@ func RegisterUser(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusCreated, newUser)
+	ctx.JSON(http.StatusCreated, response.UserRegister{
+		Age:      newUser.Age,
+		Email:    newUser.Email,
+		ID:       ID,
+		Username: newUser.Username,
+	})
 }
 
 func LoginUser(ctx *gin.Context) {
@@ -74,8 +79,8 @@ func LoginUser(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"token": jwt,
+	ctx.JSON(http.StatusOK, response.UserLogin{
+		Token: jwt,
 	})
 }
 
