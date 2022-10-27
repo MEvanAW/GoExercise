@@ -25,9 +25,7 @@ const (
 func RegisterUser(ctx *gin.Context) {
 	var newUser dto.UserRegister
 	if err := ctx.ShouldBindJSON(&newUser); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			errorMessageStr: err.Error(),
-		})
+		abortBadRequest(err, ctx)
 		return
 	}
 	if err := validate.Struct(&newUser); err != nil {
@@ -39,8 +37,8 @@ func RegisterUser(ctx *gin.Context) {
 		var perr *pgconn.PgError
 		if ok := errors.As(err, &perr); ok {
 			if perr.Code == uniqueViolationErr {
-				ctx.AbortWithStatusJSON(http.StatusOK, gin.H{
-					messageStr: "The email or username is already registered. If it is yours, do login instead.",
+				ctx.AbortWithStatusJSON(http.StatusOK, response.Message{
+					Message: "The email or username is already registered. If it is yours, do login instead.",
 				})
 				return
 			}
@@ -59,9 +57,7 @@ func RegisterUser(ctx *gin.Context) {
 func LoginUser(ctx *gin.Context) {
 	var userLogin dto.UserLogin
 	if err := ctx.ShouldBindJSON(&userLogin); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			errorMessageStr: err.Error(),
-		})
+		abortBadRequest(err, ctx)
 		return
 	}
 	if err := validate.Struct(&userLogin); err != nil {
@@ -71,8 +67,8 @@ func LoginUser(ctx *gin.Context) {
 	jwt, err := database.GenerateToken(userLogin)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) || errors.Is(err, database.ErrPasswordMismatch) {
-			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				errorMessageStr: "Email or password is incorrect.",
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response.ErrorMessage{
+				ErrorMessage: "Email or password is incorrect.",
 			})
 			return
 		}
@@ -87,9 +83,8 @@ func LoginUser(ctx *gin.Context) {
 func UpdateUser(ctx *gin.Context) {
 	var userDto dto.UserUpdate
 	if err := ctx.ShouldBindJSON(&userDto); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			errorMessageStr: err.Error(),
-		})
+		abortBadRequest(err, ctx)
+		return
 	}
 	if err := validate.Struct(&userDto); err != nil {
 		validationAbort(err, ctx)
@@ -123,6 +118,21 @@ func UpdateUser(ctx *gin.Context) {
 	})
 }
 
+func DeleteUser(ctx *gin.Context) {
+	userID, err := token.ExtractTokenID(ctx)
+	if err != nil {
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	if err := database.DeleteUserById(userID); err != nil {
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, response.Message{
+		Message: "Your account has been successfully deleted",
+	})
+}
+
 func validationAbort(err error, ctx *gin.Context) {
 	var errorMessage string
 	for _, err := range err.(validator.ValidationErrors) {
@@ -131,7 +141,11 @@ func validationAbort(err error, ctx *gin.Context) {
 	if len(errorMessage) > 0 {
 		errorMessage = errorMessage[:len(errorMessage)-1]
 	}
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-		errorMessageStr: err.Error(),
+	abortBadRequest(err, ctx)
+}
+
+func abortBadRequest(err error, ctx *gin.Context) {
+	ctx.AbortWithStatusJSON(http.StatusBadRequest, response.ErrorMessage{
+		ErrorMessage: err.Error(),
 	})
 }

@@ -11,5 +11,6 @@ func StartServer() *gin.Engine {
 	router.POST("users/register", controllers.RegisterUser)
 	router.POST("users/login", controllers.LoginUser)
 	router.PUT("users", middlewares.JwtAuthMiddleware(), controllers.UpdateUser)
+	router.DELETE("users", middlewares.JwtAuthMiddleware(), controllers.DeleteUser)
 	return router
 }
