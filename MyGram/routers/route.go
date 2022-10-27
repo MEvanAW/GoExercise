@@ -20,5 +20,6 @@ func StartServer() *gin.Engine {
 	commentsRoute := router.Group("comments", middlewares.JwtAuthMiddleware())
 	commentsRoute.POST("/", controllers.CreateComment)
 	commentsRoute.GET("/", controllers.GetAllComments)
+	commentsRoute.PUT("/:commentId", controllers.UpdateComment)
 	return router
 }

@@ -46,16 +46,20 @@ func GetSingleComment(commentID uint) (models.Comment, error) {
 	return comment, err
 }
 
-func UpdateComment(commentID uint, messageDto *dto.CommentMessage) (UpdatedAt time.Time, err error) {
-	comment, err := GetSingleComment(commentID)
+func UpdateComment(commentID, userID uint, messageDto *dto.CommentMessage) (comment models.Comment, err error) {
+	comment, err = GetSingleComment(commentID)
 	if err != nil {
+		return
+	}
+	if comment.UserID != userID {
+		comment = models.Comment{}
+		err = ErrIllegalUpdate
 		return
 	}
 	comment.Message = messageDto.Message
 	comment.UpdatedAt = time.Now()
 	err = db.Save(&comment).Error
 	if err == nil {
-		UpdatedAt = comment.UpdatedAt
 		log.Printf("Comment Updated: %+v\n", comment)
 	} else {
 		log.Printf("Failed Update Comment %+v with %+v because of %q\n", comment, messageDto, err.Error())
