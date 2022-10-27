@@ -4,6 +4,8 @@ import (
 	"example.id/mygram/controllers"
 	"example.id/mygram/middlewares"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func StartServer() *gin.Engine {
@@ -27,5 +29,6 @@ func StartServer() *gin.Engine {
 	socmedsRoute.GET("/", controllers.GetAllSocialMedias)
 	socmedsRoute.PUT("/:socialMediaId", controllers.UpdateSocialMedia)
 	socmedsRoute.DELETE("/:socialMediaId", controllers.DeleteSocialMedia)
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return router
 }

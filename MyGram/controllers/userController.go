@@ -13,6 +13,17 @@ import (
 	"gorm.io/gorm"
 )
 
+// RegisterUser godoc
+// @Summary      Register a user
+// @Description  Register a user.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        order body dto.UserRegister true "JSON of the user to be made."
+// @Success      201  {object}  responses.UserRegister
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /users/register [post]
 func RegisterUser(ctx *gin.Context) {
 	var newUser dto.UserRegister
 	if err := ctx.ShouldBindJSON(&newUser); err != nil {
@@ -45,6 +56,17 @@ func RegisterUser(ctx *gin.Context) {
 	})
 }
 
+// LoginUser godoc
+// @Summary      Login a user
+// @Description  Login a user.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        order body dto.UserLogin true "JSON of the user to login."
+// @Success      201  {object}  responses.UserLogin
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /users/login [post]
 func LoginUser(ctx *gin.Context) {
 	var userLogin dto.UserLogin
 	if err := ctx.ShouldBindJSON(&userLogin); err != nil {
