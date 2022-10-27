@@ -8,9 +8,9 @@ import (
 	"example.id/mygram/models"
 )
 
-func CreateComment(userID uint, commentDto *dto.Comment) error {
+func CreateComment(userID uint, commentDto *dto.Comment) (models.Comment, error) {
 	if db == nil {
-		return ErrDbNotStarted
+		return models.Comment{}, ErrDbNotStarted
 	}
 	newComment := models.Comment{
 		UserID:  userID,
@@ -22,8 +22,8 @@ func CreateComment(userID uint, commentDto *dto.Comment) error {
 		},
 	}
 	if err := db.Create(&newComment).Error; err != nil {
-		return err
+		return models.Comment{}, err
 	}
 	log.Printf("Photo Created: %+v\n", newComment)
-	return nil
+	return newComment, nil
 }

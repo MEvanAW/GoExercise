@@ -70,10 +70,11 @@ func main() {
 	// }
 	// CREATE A COMMENT
 	commentDto := dto.Comment{
-		Message: "gg",
-		PhotoID: 1,
+		Message: ":mbkorangtua:",
+		PhotoID: 2,
 	}
-	if err := database.CreateComment(1, &commentDto); err != nil {
+	_, err := database.CreateComment(2, &commentDto)
+	if err != nil {
 		log.Println(err.Error())
 	}
 }
