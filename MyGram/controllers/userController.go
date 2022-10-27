@@ -4,22 +4,13 @@ import (
 	"errors"
 	"net/http"
 
+	"example.id/mygram/controllers/responses"
 	"example.id/mygram/database"
 	"example.id/mygram/dto"
-	"example.id/mygram/response"
 	"example.id/mygram/utils/token"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"github.com/jackc/pgconn"
 	"gorm.io/gorm"
-)
-
-var validate = validator.New()
-
-const (
-	messageStr         = "message"
-	errorMessageStr    = "error_message"
-	uniqueViolationErr = "23505"
 )
 
 func RegisterUser(ctx *gin.Context) {
@@ -37,7 +28,7 @@ func RegisterUser(ctx *gin.Context) {
 		var perr *pgconn.PgError
 		if ok := errors.As(err, &perr); ok {
 			if perr.Code == uniqueViolationErr {
-				ctx.AbortWithStatusJSON(http.StatusOK, response.Message{
+				ctx.AbortWithStatusJSON(http.StatusOK, responses.Message{
 					Message: "The email or username is already registered. If it is yours, do login instead.",
 				})
 				return
@@ -46,7 +37,7 @@ func RegisterUser(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusCreated, response.UserRegister{
+	ctx.JSON(http.StatusCreated, responses.UserRegister{
 		Age:      newUser.Age,
 		Email:    newUser.Email,
 		ID:       ID,
@@ -67,7 +58,7 @@ func LoginUser(ctx *gin.Context) {
 	jwt, err := database.GenerateToken(userLogin)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) || errors.Is(err, database.ErrPasswordMismatch) {
-			ctx.AbortWithStatusJSON(http.StatusBadRequest, response.ErrorMessage{
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, responses.ErrorMessage{
 				ErrorMessage: "Email or password is incorrect.",
 			})
 			return
@@ -75,7 +66,7 @@ func LoginUser(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, response.UserLogin{
+	ctx.JSON(http.StatusOK, responses.UserLogin{
 		Token: jwt,
 	})
 }
@@ -109,7 +100,7 @@ func UpdateUser(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, response.UserUpdate{
+	ctx.JSON(http.StatusOK, responses.UserUpdate{
 		ID:        user.ID,
 		Email:     user.Email,
 		Username:  user.Username,
@@ -128,24 +119,7 @@ func DeleteUser(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, response.Message{
+	ctx.JSON(http.StatusOK, responses.Message{
 		Message: "Your account has been successfully deleted",
-	})
-}
-
-func validationAbort(err error, ctx *gin.Context) {
-	var errorMessage string
-	for _, err := range err.(validator.ValidationErrors) {
-		errorMessage += err.Error() + "\n"
-	}
-	if len(errorMessage) > 0 {
-		errorMessage = errorMessage[:len(errorMessage)-1]
-	}
-	abortBadRequest(err, ctx)
-}
-
-func abortBadRequest(err error, ctx *gin.Context) {
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response.ErrorMessage{
-		ErrorMessage: err.Error(),
 	})
 }

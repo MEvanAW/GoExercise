@@ -12,5 +12,7 @@ func StartServer() *gin.Engine {
 	router.POST("users/login", controllers.LoginUser)
 	router.PUT("users", middlewares.JwtAuthMiddleware(), controllers.UpdateUser)
 	router.DELETE("users", middlewares.JwtAuthMiddleware(), controllers.DeleteUser)
+	photosRoute := router.Group("photos", middlewares.JwtAuthMiddleware())
+	photosRoute.POST("/", controllers.CreatePhoto)
 	return router
 }

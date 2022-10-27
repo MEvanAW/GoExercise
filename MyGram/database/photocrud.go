@@ -9,9 +9,10 @@ import (
 	"example.id/mygram/models"
 )
 
-func CreatePhoto(userID uint, photoDto *dto.Photo) error {
+func CreatePhoto(userID uint, photoDto *dto.Photo) (ID uint, err error) {
 	if db == nil {
-		return ErrDbNotStarted
+		err = ErrDbNotStarted
+		return
 	}
 	newPhoto := models.Photo{
 		Title:    photoDto.Title,
@@ -23,11 +24,13 @@ func CreatePhoto(userID uint, photoDto *dto.Photo) error {
 			UpdatedAt: time.Now(),
 		},
 	}
-	if err := db.Create(&newPhoto).Error; err != nil {
-		return err
+	err = db.Create(&newPhoto).Error
+	if err != nil {
+		return
 	}
+	ID = newPhoto.ID
 	log.Println("Photo Created:", newPhoto)
-	return nil
+	return
 }
 
 func GetAllPhotos() ([]models.Photo, error) {
