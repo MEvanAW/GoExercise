@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"example.id/mygram/database"
-	"example.id/mygram/dto"
+	_ "example.id/mygram/dto"
 )
 
 func main() {
@@ -70,8 +70,8 @@ func main() {
 	// }
 	// CREATE A COMMENT
 	// commentDto := dto.Comment{
-	// 	Message: ":mbkorangtua:",
-	// 	PhotoID: 2,
+	// 	Message: "To be deleted.",
+	// 	PhotoID: 3,
 	// }
 	// _, err := database.CreateComment(2, &commentDto)
 	// if err != nil {
@@ -85,13 +85,18 @@ func main() {
 	// 	log.Printf("All comments: %+v\n", comments)
 	// }
 	// UPDATE A COMMENT
-	messageDto := dto.CommentMessage{
-		Message: ":mbkorangtua: :8ball:",
-	}
-	updatedAt, err := database.UpdateComment(2, &messageDto)
+	// messageDto := dto.CommentMessage{
+	// 	Message: ":mbkorangtua: :8ball:",
+	// }
+	// updatedAt, err := database.UpdateComment(2, &messageDto)
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// } else {
+	// 	log.Printf("%+v at %v", messageDto, updatedAt)
+	// }
+	// DELETE A COMMENT
+	err := database.DeleteCommentById(3)
 	if err != nil {
 		log.Println(err.Error())
-	} else {
-		log.Printf("%+v at %v", messageDto, updatedAt)
 	}
 }

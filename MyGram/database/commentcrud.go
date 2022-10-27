@@ -62,3 +62,15 @@ func UpdateComment(commentID uint, messageDto *dto.CommentMessage) (UpdatedAt ti
 	}
 	return
 }
+
+func DeleteCommentById(commentID uint) error {
+	comment, err := GetSingleComment(commentID)
+	if err != nil {
+		return err
+	}
+	if err := db.Delete(&comment, commentID).Error; err != nil {
+		return err
+	}
+	log.Println("Comment with ID", commentID, "has been successfully deleted.")
+	return nil
+}
