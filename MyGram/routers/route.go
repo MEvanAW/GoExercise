@@ -24,5 +24,6 @@ func StartServer() *gin.Engine {
 	commentsRoute.DELETE("/:commentId", controllers.DeleteComment)
 	socmedsRoute := router.Group("socialmedias", middlewares.JwtAuthMiddleware())
 	socmedsRoute.POST("/", controllers.CreateSocialMedia)
+	socmedsRoute.GET("/", controllers.GetAllSocialMedias)
 	return router
 }
