@@ -82,6 +82,21 @@ func GenerateToken(userDto dto.UserLogin) (jwt string, err error) {
 	return
 }
 
+func GetUsernameAndEmail(id uint) (dto.UserUpdate, error) {
+	userDto := dto.UserUpdate{}
+	if db == nil {
+		return userDto, ErrDbNotStarted
+	}
+	user := models.User{}
+	if err := db.Select("username", "email").Take(&user, id).Error; err != nil {
+		return userDto, err
+	}
+	userDto.Username = user.Username
+	userDto.Email = user.Email
+	log.Println("Get user dto:", userDto)
+	return userDto, nil
+}
+
 func getUserByEmail(email string) (models.User, error) {
 	user := models.User{}
 	if db == nil {

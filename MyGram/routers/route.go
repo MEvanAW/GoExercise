@@ -14,5 +14,6 @@ func StartServer() *gin.Engine {
 	router.DELETE("users", middlewares.JwtAuthMiddleware(), controllers.DeleteUser)
 	photosRoute := router.Group("photos", middlewares.JwtAuthMiddleware())
 	photosRoute.POST("/", controllers.CreatePhoto)
+	photosRoute.GET("/", controllers.GetAllPhotos)
 	return router
 }

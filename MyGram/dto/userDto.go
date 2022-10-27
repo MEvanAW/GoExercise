@@ -13,6 +13,6 @@ type UserLogin struct {
 }
 
 type UserUpdate struct {
-	Username string `validate:"required"`
-	Email    string `validate:"required,email"`
+	Username string `validate:"required" json:"username"`
+	Email    string `validate:"required,email" json:"email"`
 }

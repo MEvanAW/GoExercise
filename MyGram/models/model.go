@@ -5,7 +5,7 @@ import (
 )
 
 type Model struct {
-	ID        uint `gorm:"PrimaryKey"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        uint      `gorm:"PrimaryKey" json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
