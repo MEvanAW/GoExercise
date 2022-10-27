@@ -53,7 +53,7 @@ func GetAllPhotos(ctx *gin.Context) {
 		photosResponse[i].Set(photo)
 		userDto, ok := userDtos[photo.UserID]
 		if !ok {
-			userDto, err := database.GetUsernameAndEmail(photo.UserID)
+			userDto, err = database.GetUsernameAndEmail(photo.UserID)
 			if err != nil {
 				ctx.AbortWithError(http.StatusInternalServerError, err)
 				return
