@@ -67,10 +67,13 @@ func UpdateComment(commentID, userID uint, messageDto *dto.CommentMessage) (comm
 	return
 }
 
-func DeleteCommentById(commentID uint) error {
+func DeleteComment(commentID, userID uint) error {
 	comment, err := GetSingleComment(commentID)
 	if err != nil {
 		return err
+	}
+	if comment.UserID != userID {
+		return ErrIllegalUpdate
 	}
 	if err := db.Delete(&comment, commentID).Error; err != nil {
 		return err

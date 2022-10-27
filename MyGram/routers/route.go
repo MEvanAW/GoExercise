@@ -21,5 +21,6 @@ func StartServer() *gin.Engine {
 	commentsRoute.POST("/", controllers.CreateComment)
 	commentsRoute.GET("/", controllers.GetAllComments)
 	commentsRoute.PUT("/:commentId", controllers.UpdateComment)
+	commentsRoute.DELETE("/:commentId", controllers.DeleteComment)
 	return router
 }

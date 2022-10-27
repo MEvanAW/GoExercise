@@ -123,3 +123,36 @@ func UpdateComment(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, comment)
 }
+
+func DeleteComment(ctx *gin.Context) {
+	commentID := ctx.Param("commentId")
+	parsedID, err := strconv.ParseUint(commentID, 10, 0)
+	if err != nil {
+		abortBadRequest(err, ctx)
+		return
+	}
+	userID, err := token.ExtractTokenID(ctx)
+	if err != nil {
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	if err := database.DeleteComment(uint(parsedID), userID); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, responses.ErrorMessage{
+				ErrorMessage: fmt.Sprintf("Comment with ID %d is not found.", parsedID),
+			})
+			return
+		}
+		if errors.Is(err, database.ErrIllegalUpdate) {
+			ctx.AbortWithStatusJSON(http.StatusForbidden, responses.ErrorMessage{
+				ErrorMessage: err.Error(),
+			})
+			return
+		}
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, responses.Message{
+		Message: "Your photo has been successfully deleted",
+	})
+}
