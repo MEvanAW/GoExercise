@@ -17,5 +17,7 @@ func StartServer() *gin.Engine {
 	photosRoute.GET("/", controllers.GetAllPhotos)
 	photosRoute.PUT("/:photoId", controllers.UpdatePhoto)
 	photosRoute.DELETE("/:photoId", controllers.DeletePhoto)
+	commentsRoute := router.Group("comments", middlewares.JwtAuthMiddleware())
+	commentsRoute.POST("/", controllers.CreateComment)
 	return router
 }
