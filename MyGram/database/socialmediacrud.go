@@ -27,3 +27,12 @@ func CreateSocialMedia(userID uint, socmedDto *dto.SocialMedia) (models.SocialMe
 	log.Printf("Social Media Created: %+v\n", newSocmed)
 	return newSocmed, nil
 }
+
+func GetAllSocialMedias() ([]models.SocialMedia, error) {
+	socmeds := make([]models.SocialMedia, 1)
+	if err := db.Model(&models.SocialMedia{}).Find(&socmeds).Error; err != nil {
+		return nil, err
+	}
+	log.Println("All social medias is read from db.")
+	return socmeds, nil
+}
