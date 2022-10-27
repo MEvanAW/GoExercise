@@ -63,3 +63,15 @@ func UpdateSocialMedia(socmedID uint, socmedDto *dto.SocialMedia) (UpdatedAt tim
 	}
 	return
 }
+
+func DeleteSocialMediaById(socmedID uint) error {
+	socmed, err := GetSingleSocialMedia(socmedID)
+	if err != nil {
+		return err
+	}
+	if err := db.Delete(&socmed, socmedID).Error; err != nil {
+		return err
+	}
+	log.Println("Social Media with ID", socmedID, "has been successfully deleted.")
+	return nil
+}
