@@ -7,18 +7,27 @@ import (
 	"example.id/mygram/models"
 )
 
+type Photo struct {
+	ID       uint   `json:"id"`
+	Title    string `json:"title"`
+	Caption  string `json:"caption"`
+	PhotoUrl string `json:"photo_url"`
+	UserID   uint   `json:"user_id"`
+}
+
 type CreatePhoto struct {
-	ID        uint      `json:"id"`
-	Title     string    `json:"title"`
-	Caption   string    `json:"caption"`
-	PhotoUrl  string    `json:"photo_url"`
-	UserID    uint      `json:"user_id"`
+	Photo
 	CreatedAt time.Time `json:"created_at"`
 }
 
 type GetPhoto struct {
 	models.Photo
 	User dto.UserUpdate
+}
+
+type UpdatePhoto struct {
+	Photo
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (getPhoto *GetPhoto) Set(photo models.Photo) {

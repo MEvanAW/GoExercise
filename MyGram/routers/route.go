@@ -15,5 +15,6 @@ func StartServer() *gin.Engine {
 	photosRoute := router.Group("photos", middlewares.JwtAuthMiddleware())
 	photosRoute.POST("/", controllers.CreatePhoto)
 	photosRoute.GET("/", controllers.GetAllPhotos)
+	photosRoute.PUT("/:photoId", controllers.UpdatePhoto)
 	return router
 }

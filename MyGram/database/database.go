@@ -11,13 +11,14 @@ import (
 )
 
 var (
-	host            = "localhost"
-	dbUser          = "postgres"
-	dbPort          = "5432"
-	dbName          = "mygram"
-	db              *gorm.DB
-	err             error
-	ErrDbNotStarted error = errors.New("DB hasn't started yet.")
+	host             = "localhost"
+	dbUser           = "postgres"
+	dbPort           = "5432"
+	dbName           = "mygram"
+	db               *gorm.DB
+	err              error
+	ErrDbNotStarted  error = errors.New("DB hasn't started yet.")
+	ErrIllegalUpdate       = errors.New("This resource is not yours.")
 )
 
 func StartDB() {

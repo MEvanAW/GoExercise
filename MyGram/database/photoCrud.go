@@ -50,9 +50,13 @@ func GetSinglePhoto(photoID uint) (models.Photo, error) {
 	return photo, err
 }
 
-func UpdatePhoto(photoID uint, photoDto *dto.Photo) (UpdatedAt time.Time, err error) {
+func UpdatePhoto(photoID, userID uint, photoDto *dto.Photo) (UpdatedAt time.Time, err error) {
 	photo, err := GetSinglePhoto(photoID)
 	if err != nil {
+		return
+	}
+	if photo.UserID != userID {
+		err = ErrIllegalUpdate
 		return
 	}
 	if photoDto.Title != "" {
