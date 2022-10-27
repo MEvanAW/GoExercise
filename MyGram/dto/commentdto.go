@@ -4,3 +4,7 @@ type Comment struct {
 	Message string
 	PhotoID uint
 }
+
+type CommentMessage struct {
+	Message string
+}

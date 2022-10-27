@@ -36,3 +36,29 @@ func GetAllComments() ([]models.Comment, error) {
 	log.Println("All comments is read from db.")
 	return comments, nil
 }
+
+func GetSingleComment(commentID uint) (models.Comment, error) {
+	comment := models.Comment{}
+	if db == nil {
+		return comment, ErrDbNotStarted
+	}
+	err := db.Model(&models.Comment{}).Take(&comment, commentID).Error
+	return comment, err
+}
+
+func UpdateComment(commentID uint, messageDto *dto.CommentMessage) (UpdatedAt time.Time, err error) {
+	comment, err := GetSingleComment(commentID)
+	if err != nil {
+		return
+	}
+	comment.Message = messageDto.Message
+	comment.UpdatedAt = time.Now()
+	err = db.Save(&comment).Error
+	if err == nil {
+		UpdatedAt = comment.UpdatedAt
+		log.Printf("Comment Updated: %+v\n", comment)
+	} else {
+		log.Printf("Failed Update Comment %+v with %+v because of %q\n", comment, messageDto, err.Error())
+	}
+	return
+}
