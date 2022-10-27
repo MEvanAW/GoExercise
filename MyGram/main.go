@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"example.id/mygram/database"
-	_ "example.id/mygram/dto"
+	"example.id/mygram/dto"
 )
 
 func main() {
@@ -64,8 +64,16 @@ func main() {
 	// 	log.Printf("%+v at %v", photoDto, updatedAt)
 	// }
 	// DELETE A PHOTO
-	err := database.DeletePhotoById(5)
-	if err != nil {
+	// err := database.DeletePhotoById(5)
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// }
+	// CREATE A COMMENT
+	commentDto := dto.Comment{
+		Message: "gg",
+		PhotoID: 1,
+	}
+	if err := database.CreateComment(1, &commentDto); err != nil {
 		log.Println(err.Error())
 	}
 }
