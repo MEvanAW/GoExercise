@@ -69,3 +69,15 @@ func UpdatePhoto(photoID uint, photoDto *dto.Photo) (UpdatedAt time.Time, err er
 	}
 	return photo.UpdatedAt, err
 }
+
+func DeletePhotoById(photoID uint) error {
+	photo, err := GetSinglePhoto(photoID)
+	if err != nil {
+		return err
+	}
+	if err := db.Delete(&photo, photoID).Error; err != nil {
+		return err
+	}
+	log.Println("Photo with ID", photoID, "has been successfully deleted.")
+	return nil
+}
