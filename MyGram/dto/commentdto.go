@@ -1,10 +1,10 @@
 package dto
 
 type Comment struct {
-	Message string
-	PhotoID uint
+	Message string `validate:"required"`
+	PhotoID uint   `validate:"required"`
 }
 
 type CommentMessage struct {
-	Message string
+	Message string `validate:"required"`
 }

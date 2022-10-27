@@ -4,5 +4,5 @@ type Comment struct {
 	Model
 	UserID  uint
 	PhotoID uint
-	Message string `gorm:"not null;type:varchar(8192)" validate:"required"`
+	Message string `gorm:"not null;type:varchar(8192)"`
 }
