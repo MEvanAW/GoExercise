@@ -4,6 +4,8 @@ go 1.19
 
 require gorm.io/driver/postgres v1.4.4
 
+require github.com/golang-jwt/jwt/v4 v4.4.2
+
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.8.1

@@ -6,8 +6,11 @@ import (
 
 	"example.id/mygram/dto"
 	"example.id/mygram/models"
+	"example.id/mygram/utils/token"
 	"golang.org/x/crypto/bcrypt"
 )
+
+var ErrPasswordMismatch = bcrypt.ErrMismatchedHashAndPassword
 
 func CreateUser(userRegister *dto.UserRegister) error {
 	if db == nil {
@@ -62,6 +65,32 @@ func DeleteUserById(id uint) error {
 	}
 	log.Println("User with id", id, "has been successfully deleted.")
 	return nil
+}
+
+func GenerateToken(userDto dto.UserLogin) (jwt string, err error) {
+	user, err := getUserByEmail(userDto.Email)
+	if err != nil {
+		return
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userDto.Password))
+	if err != nil {
+		return
+	}
+	jwt, err = token.GenerateToken(user.ID)
+	return
+}
+
+func getUserByEmail(email string) (models.User, error) {
+	user := models.User{}
+	if db == nil {
+		return user, ErrDbNotStarted
+	}
+	err := db.Model(&models.User{}).Where("email = ?", email).Take(&user).Error
+	if err != nil {
+		return user, err
+	}
+	log.Println("Get user by email:", user)
+	return user, nil
 }
 
 func getUserWithoutPreload(id uint) (models.User, error) {

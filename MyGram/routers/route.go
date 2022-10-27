@@ -8,5 +8,6 @@ import (
 func StartServer() *gin.Engine {
 	router := gin.Default()
 	router.POST("users/register", controllers.RegisterUser)
+	router.POST("users/login", controllers.LoginUser)
 	return router
 }
