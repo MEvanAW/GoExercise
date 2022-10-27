@@ -68,10 +68,13 @@ func UpdateSocialMedia(socmedID, userID uint, socmedDto *dto.SocialMedia) (Updat
 	return
 }
 
-func DeleteSocialMediaById(socmedID uint) error {
+func DeleteSocialMedia(socmedID, userID uint) error {
 	socmed, err := GetSingleSocialMedia(socmedID)
 	if err != nil {
 		return err
+	}
+	if socmed.UserID != userID {
+		return ErrIllegalUpdate
 	}
 	if err := db.Delete(&socmed, socmedID).Error; err != nil {
 		return err

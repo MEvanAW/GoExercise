@@ -118,3 +118,36 @@ func UpdateSocialMedia(ctx *gin.Context) {
 		UpdatedAt:      updatedAt,
 	})
 }
+
+func DeleteSocialMedia(ctx *gin.Context) {
+	socmedID := ctx.Param("socialMediaId")
+	parsedID, err := strconv.ParseUint(socmedID, 10, 0)
+	if err != nil {
+		abortBadRequest(err, ctx)
+		return
+	}
+	userID, err := token.ExtractTokenID(ctx)
+	if err != nil {
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	if err := database.DeleteSocialMedia(uint(parsedID), userID); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, responses.ErrorMessage{
+				ErrorMessage: fmt.Sprintf("Social media with ID %d is not found.", parsedID),
+			})
+			return
+		}
+		if errors.Is(err, database.ErrIllegalUpdate) {
+			ctx.AbortWithStatusJSON(http.StatusForbidden, responses.ErrorMessage{
+				ErrorMessage: err.Error(),
+			})
+			return
+		}
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, responses.Message{
+		Message: "Your social media has been successfully deleted",
+	})
+}

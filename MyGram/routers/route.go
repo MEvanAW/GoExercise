@@ -26,5 +26,6 @@ func StartServer() *gin.Engine {
 	socmedsRoute.POST("/", controllers.CreateSocialMedia)
 	socmedsRoute.GET("/", controllers.GetAllSocialMedias)
 	socmedsRoute.PUT("/:socialMediaId", controllers.UpdateSocialMedia)
+	socmedsRoute.DELETE("/:socialMediaId", controllers.DeleteSocialMedia)
 	return router
 }
