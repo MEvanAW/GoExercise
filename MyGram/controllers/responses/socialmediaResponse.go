@@ -23,6 +23,14 @@ type GetSocialMedia struct {
 	User UserSocialMedia
 }
 
+type UpdateSocialMedia struct {
+	ID             uint      `json:"id"`
+	Name           string    `json:"name"`
+	SocialMediaUrl string    `json:"social_media_url"`
+	UserID         uint      `json:"user_id"`
+	UpdatedAt      time.Time `json:"updated_at"`
+}
+
 type UserSocialMedia struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`

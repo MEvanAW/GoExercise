@@ -25,5 +25,6 @@ func StartServer() *gin.Engine {
 	socmedsRoute := router.Group("socialmedias", middlewares.JwtAuthMiddleware())
 	socmedsRoute.POST("/", controllers.CreateSocialMedia)
 	socmedsRoute.GET("/", controllers.GetAllSocialMedias)
+	socmedsRoute.PUT("/:socialMediaId", controllers.UpdateSocialMedia)
 	return router
 }
