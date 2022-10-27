@@ -77,10 +77,13 @@ func UpdatePhoto(photoID, userID uint, photoDto *dto.Photo) (UpdatedAt time.Time
 	return
 }
 
-func DeletePhotoById(photoID uint) error {
+func DeletePhoto(photoID, userID uint) error {
 	photo, err := GetSinglePhoto(photoID)
 	if err != nil {
 		return err
+	}
+	if photo.UserID != userID {
+		return ErrIllegalUpdate
 	}
 	if err := db.Delete(&photo, photoID).Error; err != nil {
 		return err

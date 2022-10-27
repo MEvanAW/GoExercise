@@ -16,5 +16,6 @@ func StartServer() *gin.Engine {
 	photosRoute.POST("/", controllers.CreatePhoto)
 	photosRoute.GET("/", controllers.GetAllPhotos)
 	photosRoute.PUT("/:photoId", controllers.UpdatePhoto)
+	photosRoute.DELETE("/:photoId", controllers.DeletePhoto)
 	return router
 }
