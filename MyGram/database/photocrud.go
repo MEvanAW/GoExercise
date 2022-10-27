@@ -50,8 +50,7 @@ func GetSinglePhoto(photoID uint) (models.Photo, error) {
 func UpdatePhoto(photoID uint, photoDto *dto.Photo) (UpdatedAt time.Time, err error) {
 	photo, err := GetSinglePhoto(photoID)
 	if err != nil {
-		var temp time.Time
-		return temp, err
+		return
 	}
 	if photoDto.Title != "" {
 		photo.Title = photoDto.Title
@@ -63,11 +62,12 @@ func UpdatePhoto(photoID uint, photoDto *dto.Photo) (UpdatedAt time.Time, err er
 	photo.UpdatedAt = time.Now()
 	err = db.Save(&photo).Error
 	if err == nil {
+		UpdatedAt = photo.UpdatedAt
 		log.Printf("Photo Updated: %+v\n", photo)
 	} else {
 		log.Printf("Failed Update Photo %+v with %+v because of %q\n", photo, photoDto, err.Error())
 	}
-	return photo.UpdatedAt, err
+	return
 }
 
 func DeletePhotoById(photoID uint) error {
