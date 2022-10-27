@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"example.id/mygram/database"
-	_ "example.id/mygram/dto"
+	"example.id/mygram/dto"
 )
 
 func main() {
@@ -57,14 +57,14 @@ func main() {
 	// 	Caption:  "Updated!",
 	// 	PhotoUrl: "https://updated.be.com/image/C?e=1",
 	// }
-	// updatedAt, err := database.UpdatePhoto(5, &photoDto)
+	// updatedAt, err := database.UpdatePhoto(7, &photoDto)
 	// if err != nil {
 	// 	log.Println(err.Error())
 	// } else {
 	// 	log.Printf("%+v at %v", photoDto, updatedAt)
 	// }
 	// DELETE A PHOTO
-	// err := database.DeletePhotoById(5)
+	// err := database.DeletePhotoById(7)
 	// if err != nil {
 	// 	log.Println(err.Error())
 	// }
@@ -88,14 +88,23 @@ func main() {
 	// messageDto := dto.CommentMessage{
 	// 	Message: ":mbkorangtua: :8ball:",
 	// }
-	// updatedAt, err := database.UpdateComment(2, &messageDto)
+	// updatedAt, err := database.UpdateComment(4, &messageDto)
 	// if err != nil {
 	// 	log.Println(err.Error())
 	// } else {
 	// 	log.Printf("%+v at %v", messageDto, updatedAt)
 	// }
 	// DELETE A COMMENT
-	err := database.DeleteCommentById(3)
+	// err := database.DeleteCommentById(4)
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// }
+	// CREATE SOCIAL MEDIA
+	socmedDto := dto.SocialMedia{
+		Name:           "Linkedin",
+		SocialMediaUrl: "https://www.linkedin.com/in/muhammad-evan-anindya-wahyuaji-7796aa192/",
+	}
+	_, err := database.CreateSocialMedia(2, &socmedDto)
 	if err != nil {
 		log.Println(err.Error())
 	}
