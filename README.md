@@ -37,7 +37,7 @@ A social media
 1. Install postgresql if you haven't. Alternatively you can use other RDBMS, but you would need to replace gorm postgres driver with its respective gorm driver.
 2. Create a database with a name of "mygram"
 ### Run the Server
-1. Open "OrderApi" folder.
+1. Open "MyGram" folder.
 2. `go run .` in Terminal.
 ### Swagger
 Swagger is available for this API server. To open swagger UI, open http://localhost:8080/swagger/index.html. The API implementation is already complete, although the swagger docs is still work in progress. Request paths and bodies strictly follows kode.id materials though, so the rest of the format can be read there.
