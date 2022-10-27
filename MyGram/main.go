@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"example.id/mygram/database"
-	"example.id/mygram/dto"
+	_ "example.id/mygram/dto"
 )
 
 func main() {
@@ -34,12 +34,19 @@ func main() {
 	// 	log.Println(err.Error())
 	// }
 	// CREATE PHOTO
-	photoDto := dto.Photo{
-		Title:    "My new photo profile!",
-		Caption:  "Drawn with Inkscape.",
-		PhotoUrl: "https://avatars.githubusercontent.com/u/50491841?v=4",
-	}
-	if err := database.CreatePhoto(2, &photoDto); err != nil {
+	// photoDto := dto.Photo{
+	// 	Title:    "Linkedin Photo Profile",
+	// 	Caption:  "UI/UX Designer at PT Javan Cipta Solusi.",
+	// 	PhotoUrl: "https://media-exp1.licdn.com/dms/image/C5603AQH5R3vCtuyvUg/profile-displayphoto-shrink_400_400/0/1622972541475?e=1672272000&v=beta&t=139NJp5PNckox4pix6JynXuAg9QqGgomYkYNeNLGOtY",
+	// }
+	// if err := database.CreatePhoto(1, &photoDto); err != nil {
+	// 	log.Println(err.Error())
+	// }
+	// GET ALL PHOTO
+	photos, err := database.GetAllPhotos()
+	if err != nil {
 		log.Println(err.Error())
+	} else {
+		log.Printf("%+v\n", photos)
 	}
 }

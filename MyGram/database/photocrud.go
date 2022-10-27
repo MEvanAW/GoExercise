@@ -29,3 +29,11 @@ func CreatePhoto(userID uint, photoDto *dto.Photo) error {
 	log.Println("Photo Created:", newPhoto)
 	return nil
 }
+
+func GetAllPhotos() ([]models.Photo, error) {
+	photos := make([]models.Photo, 1)
+	if err := db.Model(&models.Photo{}).Find(&photos).Error; err != nil {
+		return nil, err
+	}
+	return photos, nil
+}
