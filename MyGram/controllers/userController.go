@@ -6,6 +6,8 @@ import (
 
 	"example.id/mygram/database"
 	"example.id/mygram/dto"
+	"example.id/mygram/response"
+	"example.id/mygram/utils/token"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/jackc/pgconn"
@@ -74,6 +76,45 @@ func LoginUser(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{
 		"token": jwt,
+	})
+}
+
+func UpdateUser(ctx *gin.Context) {
+	var userDto dto.UserUpdate
+	if err := ctx.ShouldBindJSON(&userDto); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			errorMessageStr: err.Error(),
+		})
+	}
+	if err := validate.Struct(&userDto); err != nil {
+		validationAbort(err, ctx)
+		return
+	}
+	userID, err := token.ExtractTokenID(ctx)
+	if err != nil {
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	user, err := database.UpdateUser(userID, &userDto)
+	if err != nil {
+		var perr *pgconn.PgError
+		if ok := errors.As(err, &perr); ok {
+			if perr.Code == uniqueViolationErr {
+				ctx.AbortWithStatusJSON(http.StatusOK, gin.H{
+					messageStr: "The email or username is already registered.",
+				})
+				return
+			}
+		}
+		ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, response.UserUpdate{
+		ID:        user.ID,
+		Email:     user.Email,
+		Username:  user.Username,
+		Age:       user.Age,
+		UpdatedAt: user.UpdatedAt,
 	})
 }
 

@@ -44,7 +44,7 @@ func TokenValid(c *gin.Context) error {
 func ExtractToken(c *gin.Context) (string, error) {
 	bearerToken := c.Request.Header.Get("Authorization")
 	tokenSlice := strings.Split(bearerToken, " ")
-	if len(tokenSlice) == 2 {
+	if len(tokenSlice) >= 2 {
 		return tokenSlice[1], nil
 	}
 	return "", ErrNoToken
