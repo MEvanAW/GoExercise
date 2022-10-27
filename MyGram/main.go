@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"example.id/mygram/database"
-	_ "example.id/mygram/dto"
+	"example.id/mygram/dto"
 )
 
 func main() {
@@ -101,18 +101,29 @@ func main() {
 	// }
 	// CREATE SOCIAL MEDIA
 	// socmedDto := dto.SocialMedia{
-	// 	Name:           "Linkedin",
-	// 	SocialMediaUrl: "https://www.linkedin.com/in/muhammad-evan-anindya-wahyuaji-7796aa192/",
+	// 	Name:           "Twitter",
+	// 	SocialMediaUrl: "https://whoops.wrong.url/",
 	// }
 	// _, err := database.CreateSocialMedia(2, &socmedDto)
 	// if err != nil {
 	// 	log.Println(err.Error())
 	// }
 	// GET ALL SOCIAL MEDIA
-	socmeds, err := database.GetAllSocialMedias()
+	// socmeds, err := database.GetAllSocialMedias()
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// } else {
+	// 	log.Printf("All social medias: %+v\n", socmeds)
+	// }
+	// UPDATE A SOCIAL MEDIA
+	socmedDto := dto.SocialMedia{
+		Name:           "Linkedin",
+		SocialMediaUrl: "https://www.linkedin.com/in/muhammad-evan-anindya-wahyuaji-7796aa192/",
+	}
+	updatedAt, err := database.UpdateSocialMedia(1, &socmedDto)
 	if err != nil {
 		log.Println(err.Error())
 	} else {
-		log.Printf("All social medias: %+v\n", socmeds)
+		log.Printf("%+v at %v", socmedDto, updatedAt)
 	}
 }

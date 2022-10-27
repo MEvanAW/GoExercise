@@ -36,3 +36,30 @@ func GetAllSocialMedias() ([]models.SocialMedia, error) {
 	log.Println("All social medias is read from db.")
 	return socmeds, nil
 }
+
+func GetSingleSocialMedia(socmedID uint) (models.SocialMedia, error) {
+	socmed := models.SocialMedia{}
+	if db == nil {
+		return socmed, ErrDbNotStarted
+	}
+	err := db.Model(&models.SocialMedia{}).Take(&socmed, socmedID).Error
+	return socmed, err
+}
+
+func UpdateSocialMedia(socmedID uint, socmedDto *dto.SocialMedia) (UpdatedAt time.Time, err error) {
+	socmed, err := GetSingleSocialMedia(socmedID)
+	if err != nil {
+		return
+	}
+	socmed.Name = socmedDto.Name
+	socmed.SocialMediaUrl = socmedDto.SocialMediaUrl
+	socmed.UpdatedAt = time.Now()
+	err = db.Save(&socmed).Error
+	if err == nil {
+		UpdatedAt = socmed.UpdatedAt
+		log.Printf("Social Media Updated: %+v\n", socmed)
+	} else {
+		log.Printf("Failed Update Social Media %+v with %+v because of %q", socmed, socmedDto, err.Error())
+	}
+	return
+}
