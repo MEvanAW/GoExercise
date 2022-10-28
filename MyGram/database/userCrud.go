@@ -17,6 +17,7 @@ func CreateUser(userRegister *dto.UserRegister) (ID uint, err error) {
 		err = ErrDbNotStarted
 		return
 	}
+	// For ease of use in exercise, the cost is set to 4. Consider using higher cost for production.
 	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(userRegister.Password), 4)
 	if err != nil {
 		return
