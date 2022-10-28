@@ -1,5 +1,18 @@
 basePath: /
 definitions:
+  dto.Photo:
+    properties:
+      caption:
+        type: string
+      photo_url:
+        example: https://subdomain.domain.dom.ge/path?arg=1
+        type: string
+      title:
+        type: string
+    required:
+    - photo_url
+    - title
+    type: object
   dto.UserLogin:
     properties:
       email:
@@ -42,15 +55,77 @@ definitions:
     - email
     - username
     type: object
+  responses.CreatePhoto:
+    properties:
+      caption:
+        type: string
+      created_at:
+        example: "2019-11-09T21:21:46+00:00"
+        type: string
+      id:
+        example: 1
+        type: integer
+      photo_url:
+        example: https://subdomain.domain.dom.ge/path?arg=1
+        type: string
+      title:
+        type: string
+      user_id:
+        example: 1
+        type: integer
+    type: object
   responses.ErrorMessage:
     properties:
       error_message:
         type: string
     type: object
+  responses.GetPhoto:
+    properties:
+      caption:
+        type: string
+      created_at:
+        example: "2019-11-09T21:21:46+00:00"
+        type: string
+      id:
+        example: 1
+        type: integer
+      photo_url:
+        example: https://subdomain.domain.dom.ge/path?arg=1
+        type: string
+      title:
+        type: string
+      updated_at:
+        example: "2019-11-09T21:21:46+00:00"
+        type: string
+      user:
+        $ref: '#/definitions/dto.UserUpdate'
+      user_id:
+        example: 1
+        type: integer
+    type: object
   responses.Message:
     properties:
       message:
         type: string
+    type: object
+  responses.UpdatePhoto:
+    properties:
+      caption:
+        type: string
+      id:
+        example: 1
+        type: integer
+      photo_url:
+        example: https://subdomain.domain.dom.ge/path?arg=1
+        type: string
+      title:
+        type: string
+      updated_at:
+        example: "2019-11-09T21:21:46+00:00"
+        type: string
+      user_id:
+        example: 1
+        type: integer
     type: object
   responses.UserLogin:
     properties:
@@ -101,6 +176,136 @@ info:
   title: MyGram API
   version: "1.0"
 paths:
+  /photos:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a photo associated with logged in user.
+      parameters:
+      - description: ID number of the photo to be deleted
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorMessage'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/responses.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorMessage'
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Delete a photo
+      tags:
+      - photos
+    get:
+      consumes:
+      - application/json
+      description: Get photos.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/responses.GetPhoto'
+            type: array
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Get photos
+      tags:
+      - photos
+    post:
+      consumes:
+      - application/json
+      description: Create a Photo associated with the logged in user identified by
+        bearer token.
+      parameters:
+      - description: JSON of the photo to be made. Caption is not mandatory.
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Photo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/responses.CreatePhoto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorMessage'
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Create a Photo
+      tags:
+      - photos
+  /photos/{photoId}:
+    put:
+      consumes:
+      - application/json
+      description: Update a photo associated with logged in user.
+      parameters:
+      - description: ID number of the photo
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      - description: New JSON of the photo.
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Photo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.UpdatePhoto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorMessage'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/responses.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorMessage'
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Update a photo
+      tags:
+      - photos
   /users:
     delete:
       consumes:
@@ -169,8 +374,8 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/responses.UserLogin'
         "400":
@@ -202,6 +407,10 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/responses.UserRegister'
+        "209":
+          description: ""
+          schema:
+            $ref: '#/definitions/responses.Message'
         "400":
           description: Bad Request
           schema:

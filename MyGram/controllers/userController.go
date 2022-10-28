@@ -21,6 +21,7 @@ import (
 // @Produce      json
 // @Param        user body dto.UserRegister true "JSON of the user to be made. Minimum age is 9. Minimum password length is 6"
 // @Success      201  {object}  responses.UserRegister
+// @Success		 209  {object}  responses.Message
 // @Failure      400  {object}  responses.ErrorMessage
 // @Failure      500  {object}  nil
 // @Router       /users/register [post]
@@ -39,7 +40,7 @@ func RegisterUser(ctx *gin.Context) {
 		var perr *pgconn.PgError
 		if ok := errors.As(err, &perr); ok {
 			if perr.Code == uniqueViolationErr {
-				ctx.AbortWithStatusJSON(http.StatusOK, responses.Message{
+				ctx.AbortWithStatusJSON(209, responses.Message{
 					Message: "The email or username is already registered. If it is yours, do login instead.",
 				})
 				return
@@ -63,7 +64,7 @@ func RegisterUser(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        user body dto.UserLogin true "JSON of the user to login. Minimum password length is 6."
-// @Success      201  {object}  responses.UserLogin
+// @Success      200  {object}  responses.UserLogin
 // @Failure      400  {object}  responses.ErrorMessage
 // @Failure      500  {object}  nil
 // @Router       /users/login [post]
