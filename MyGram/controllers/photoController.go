@@ -66,6 +66,7 @@ func CreatePhoto(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  []responses.GetPhoto
+// @Failure		 400 {object} responses.ErrorMessage
 // @Failure      500  {object}  nil
 // @Router       /photos [get]
 // @Security	 BearerAuth
@@ -100,7 +101,7 @@ func GetAllPhotos(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param		 photoId path uint true "ID number of the photo"
-// @Param        user body dto.Photo true "New JSON of the photo."
+// @Param        photo body dto.Photo true "New JSON of the photo."
 // @Success      200  {object}  responses.UpdatePhoto
 // @Failure      400  {object}  responses.ErrorMessage
 // @Failure      403  {object}  responses.ErrorMessage
@@ -158,7 +159,7 @@ func UpdatePhoto(ctx *gin.Context) {
 	})
 }
 
-// DeleteOrder godoc
+// DeletePhoto godoc
 // @Summary      Delete a photo
 // @Description  Delete a photo associated with logged in user.
 // @Tags         photos

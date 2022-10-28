@@ -7,23 +7,23 @@ import (
 )
 
 type CreateComment struct {
-	ID        uint      `json:"id"`
+	ID        uint      `json:"id" example:"1"`
 	Message   string    `json:"message"`
-	PhotoID   uint      `json:"photo_id"`
-	UserID    uint      `json:"user_id"`
-	CreatedAt time.Time `json:"created_at"`
+	PhotoID   uint      `json:"photo_id" example:"1"`
+	UserID    uint      `json:"user_id" example:"1"`
+	CreatedAt time.Time `json:"created_at" example:"2019-11-09T21:21:46+00:00"`
 }
 
 type GetComment struct {
 	CreateComment
-	UpdatedAt time.Time `json:"updated_at"`
+	UpdatedAt time.Time `json:"updated_at" example:"2019-11-09T21:21:46+00:00"`
 	User      UserComment
 	Photo     models.Photo
 }
 
 type UserComment struct {
-	ID       uint   `json:"id"`
-	Email    string `json:"email"`
+	ID       uint   `json:"id" example:"1"`
+	Email    string `json:"email" example:"name@org.dom.ge"`
 	Username string `json:"username"`
 }
 

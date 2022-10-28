@@ -15,6 +15,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// CreateComment godoc
+// @Summary      Create a Comment
+// @Description  Create a Comment associated with the logged in user.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        user body dto.Comment true "JSON of the comment to be made. Caption is not mandatory."
+// @Success      201  {object}  responses.CreateComment
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /comments [post]
+// @Security	 BearerAuth
 func CreateComment(ctx *gin.Context) {
 	var newComment dto.Comment
 	if err := ctx.ShouldBindJSON(&newComment); err != nil {
@@ -44,6 +56,17 @@ func CreateComment(ctx *gin.Context) {
 	})
 }
 
+// GetComments godoc
+// @Summary      Get comments
+// @Description  Get comments.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  []responses.GetComment
+// @Failure		 400 {object} responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /comments [get]
+// @Security	 BearerAuth
 func GetAllComments(ctx *gin.Context) {
 	comments, err := database.GetAllComments()
 	if err != nil {
@@ -83,6 +106,21 @@ func GetAllComments(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, commentsResponse)
 }
 
+// UpdateComment godoc
+// @Summary      Update a comment
+// @Description  Update a comment associated with logged in user.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param		 commentId path uint true "ID number of the comment"
+// @Param        comment body dto.CommentMessage true "New JSON of the comment."
+// @Success      200  {object}  models.Comment
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      403  {object}  responses.ErrorMessage
+// @Failure      404  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /comments/{commentId} [put]
+// @Security	 BearerAuth
 func UpdateComment(ctx *gin.Context) {
 	commentID := ctx.Param("commentId")
 	parsedID, err := strconv.ParseUint(commentID, 10, 0)
@@ -124,6 +162,20 @@ func UpdateComment(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, comment)
 }
 
+// DeleteComment godoc
+// @Summary      Delete a comment
+// @Description  Delete a comment associated with logged in user.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param		 commentId path uint true "ID number of the comment to be deleted"
+// @Success      200  {object}  responses.Message
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      403  {object}  responses.ErrorMessage
+// @Failure      404  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /comments [delete]
+// @Security	 BearerAuth
 func DeleteComment(ctx *gin.Context) {
 	commentID := ctx.Param("commentId")
 	parsedID, err := strconv.ParseUint(commentID, 10, 0)
