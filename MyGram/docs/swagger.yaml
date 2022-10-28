@@ -3,6 +3,7 @@ definitions:
   dto.UserLogin:
     properties:
       email:
+        example: name@org.dom.ge
         type: string
       password:
         minLength: 6
@@ -14,8 +15,10 @@ definitions:
   dto.UserRegister:
     properties:
       age:
+        example: 23
         type: integer
       email:
+        example: name@org.dom.ge
         type: string
       password:
         minLength: 6
@@ -28,24 +31,60 @@ definitions:
     - password
     - username
     type: object
+  dto.UserUpdate:
+    properties:
+      email:
+        example: name@org.dom.ge
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - username
+    type: object
   responses.ErrorMessage:
     properties:
       error_message:
         type: string
     type: object
+  responses.Message:
+    properties:
+      message:
+        type: string
+    type: object
   responses.UserLogin:
     properties:
       token:
+        example: header.payload.signature
         type: string
     type: object
   responses.UserRegister:
     properties:
       age:
+        example: 23
         type: integer
       email:
+        example: name@org.dom.ge
         type: string
       id:
         type: integer
+      username:
+        type: string
+    type: object
+  responses.UserUpdate:
+    properties:
+      age:
+        example: 23
+        type: integer
+      email:
+        example: name@org.dom.ge
+        type: string
+      id:
+        example: 1
+        type: integer
+      updated_at:
+        example: "2019-11-09T21:21:46+00:00"
+        type: string
       username:
         type: string
     type: object
@@ -59,18 +98,71 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  title: Order API
+  title: MyGram API
   version: "1.0"
 paths:
+  /users:
+    delete:
+      consumes:
+      - application/json
+      description: Delete logged in user identified by their bearer token.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorMessage'
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Delete logged in user
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: update logged in user identified by their bearer token.
+      parameters:
+      - description: New email and new username of the logged in user. Leave one of
+          it empty if you want it to stay the same.
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.UserUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorMessage'
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Update logged in user
+      tags:
+      - users
   /users/login:
     post:
       consumes:
       - application/json
       description: Login a user.
       parameters:
-      - description: JSON of the user to login.
+      - description: JSON of the user to login. Minimum password length is 6.
         in: body
-        name: order
+        name: user
         required: true
         schema:
           $ref: '#/definitions/dto.UserLogin'
@@ -94,11 +186,12 @@ paths:
     post:
       consumes:
       - application/json
-      description: Register a user.
+      description: Register a new user.
       parameters:
-      - description: JSON of the user to be made.
+      - description: JSON of the user to be made. Minimum age is 9. Minimum password
+          length is 6
         in: body
-        name: order
+        name: user
         required: true
         schema:
           $ref: '#/definitions/dto.UserRegister'
@@ -115,7 +208,12 @@ paths:
             $ref: '#/definitions/responses.ErrorMessage'
         "500":
           description: Internal Server Error
-      summary: Register a user
+      summary: Register a new user
       tags:
       - users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

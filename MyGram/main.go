@@ -6,7 +6,7 @@ import (
 	"example.id/mygram/routers"
 )
 
-// @title           Order API
+// @title           MyGram API
 // @version         1.0
 // @description     API server for MyGram social media in "Scalable Webservice with Golang" course from Hacktiv8 × Kominfo.
 
@@ -18,6 +18,10 @@ import (
 
 // @host      localhost:8080
 // @BasePath  /
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	database.StartDB()
 	var port = ":8080"

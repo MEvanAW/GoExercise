@@ -23,6 +23,89 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/users": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "update logged in user identified by their bearer token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update logged in user",
+                "parameters": [
+                    {
+                        "description": "New email and new username of the logged in user. Leave one of it empty if you want it to stay the same.",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.UserUpdate"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete logged in user identified by their bearer token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete logged in user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/login": {
             "post": {
                 "description": "Login a user.",
@@ -38,8 +121,8 @@ const docTemplate = `{
                 "summary": "Login a user",
                 "parameters": [
                     {
-                        "description": "JSON of the user to login.",
-                        "name": "order",
+                        "description": "JSON of the user to login. Minimum password length is 6.",
+                        "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -68,7 +151,7 @@ const docTemplate = `{
         },
         "/users/register": {
             "post": {
-                "description": "Register a user.",
+                "description": "Register a new user.",
                 "consumes": [
                     "application/json"
                 ],
@@ -78,11 +161,11 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "Register a user",
+                "summary": "Register a new user",
                 "parameters": [
                     {
-                        "description": "JSON of the user to be made.",
-                        "name": "order",
+                        "description": "JSON of the user to be made. Minimum age is 9. Minimum password length is 6",
+                        "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -119,7 +202,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "name@org.dom.ge"
                 },
                 "password": {
                     "type": "string",
@@ -137,14 +221,32 @@ const docTemplate = `{
             ],
             "properties": {
                 "age": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 23
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "name@org.dom.ge"
                 },
                 "password": {
                     "type": "string",
                     "minLength": 6
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserUpdate": {
+            "type": "object",
+            "required": [
+                "email",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "name@org.dom.ge"
                 },
                 "username": {
                     "type": "string"
@@ -159,11 +261,20 @@ const docTemplate = `{
                 }
             }
         },
+        "responses.Message": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "responses.UserLogin": {
             "type": "object",
             "properties": {
                 "token": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "header.payload.signature"
                 }
             }
         },
@@ -171,10 +282,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "age": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 23
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "name@org.dom.ge"
                 },
                 "id": {
                     "type": "integer"
@@ -183,6 +296,37 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "responses.UserUpdate": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "example": 23
+                },
+                "email": {
+                    "type": "string",
+                    "example": "name@org.dom.ge"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2019-11-09T21:21:46+00:00"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -193,7 +337,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Order API",
+	Title:            "MyGram API",
 	Description:      "API server for MyGram social media in \"Scalable Webservice with Golang\" course from Hacktiv8 × Kominfo.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
