@@ -82,7 +82,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "JSON of the comment to be made. Caption is not mandatory.",
-                        "name": "user",
+                        "name": "comment",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -99,62 +99,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/responses.ErrorMessage"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Delete a comment associated with logged in user.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "comments"
-                ],
-                "summary": "Delete a comment",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID number of the comment to be deleted",
-                        "name": "commentId",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/responses.Message"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/responses.ErrorMessage"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/responses.ErrorMessage"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/responses.ErrorMessage"
                         }
@@ -206,6 +150,62 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Comment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a comment associated with logged in user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "comments"
+                ],
+                "summary": "Delete a comment",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID number of the comment to be deleted",
+                        "name": "commentId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Message"
                         }
                     },
                     "400": {
@@ -316,6 +316,73 @@ const docTemplate = `{
                         "description": "Internal Server Error"
                     }
                 }
+            }
+        },
+        "/photos/{photoId}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a photo associated with logged in user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "photos"
+                ],
+                "summary": "Update a photo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID number of the photo",
+                        "name": "photoId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New JSON of the photo.",
+                        "name": "photo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Photo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.UpdatePhoto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
             },
             "delete": {
                 "security": [
@@ -374,14 +441,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/photos/{photoId}": {
-            "put": {
+        "/socialmedias": {
+            "get": {
                 "security": [
                     {
                         "BearerAuth": []
                     }
                 ],
-                "description": "Update a photo associated with logged in user.",
+                "description": "Get social medias.",
                 "consumes": [
                     "application/json"
                 ],
@@ -389,24 +456,107 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "photos"
+                    "socialMedias"
                 ],
-                "summary": "Update a photo",
+                "summary": "Get social medias",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.GetAllSocialMedias"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a social media associated with the logged in user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "socialMedias"
+                ],
+                "summary": "Create a social media",
+                "parameters": [
+                    {
+                        "description": "JSON of the social media to be made.",
+                        "name": "socialMedia",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SocialMedia"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/responses.CreateSocialMedia"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/socialmedias/{socialMediaId}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a social media associated with logged in user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "socialMedias"
+                ],
+                "summary": "Update a social media",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID number of the photo",
-                        "name": "photoId",
+                        "description": "ID number of the social media",
+                        "name": "socialMediaId",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "New JSON of the photo.",
-                        "name": "photo",
+                        "description": "New JSON of the social media.",
+                        "name": "socialMedia",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.Photo"
+                            "$ref": "#/definitions/dto.SocialMedia"
                         }
                     }
                 ],
@@ -414,7 +564,63 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.UpdatePhoto"
+                            "$ref": "#/definitions/responses.UpdateSocialMedia"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/responses.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a social media associated with logged in user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "socialMedias"
+                ],
+                "summary": "Delete a social media",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID number of the social media to be deleted",
+                        "name": "socialMediaId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Message"
                         }
                     },
                     "400": {
@@ -664,6 +870,22 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.SocialMedia": {
+            "type": "object",
+            "required": [
+                "name",
+                "social_media_url"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "social_media_url": {
+                    "type": "string",
+                    "example": "https://subdomain.domain.dom.ge/path"
+                }
+            }
+        },
         "dto.UserLogin": {
             "type": "object",
             "required": [
@@ -833,11 +1055,44 @@ const docTemplate = `{
                 }
             }
         },
+        "responses.CreateSocialMedia": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string"
+                },
+                "social_media_url": {
+                    "type": "string",
+                    "example": "https://subdomain.domain.dom.ge/path"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "responses.ErrorMessage": {
             "type": "object",
             "properties": {
                 "error_message": {
                     "type": "string"
+                }
+            }
+        },
+        "responses.GetAllSocialMedias": {
+            "type": "object",
+            "properties": {
+                "social_medias": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/responses.GetSocialMedia"
+                    }
                 }
             }
         },
@@ -909,6 +1164,35 @@ const docTemplate = `{
                 }
             }
         },
+        "responses.GetSocialMedia": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2019-11-09T21:21:46+00:00"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string"
+                },
+                "social_media_url": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2019-11-09T21:21:46+00:00"
+                },
+                "user": {
+                    "$ref": "#/definitions/responses.UserSocialMedia"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "responses.Message": {
             "type": "object",
             "properties": {
@@ -933,6 +1217,30 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2019-11-09T21:21:46+00:00"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "responses.UpdateSocialMedia": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string"
+                },
+                "social_media_url": {
+                    "type": "string",
+                    "example": "https://subdomain.domain.dom.ge/path"
                 },
                 "updated_at": {
                     "type": "string",
@@ -982,6 +1290,18 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses.UserSocialMedia": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "username": {
                     "type": "string"

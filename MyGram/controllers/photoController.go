@@ -171,7 +171,7 @@ func UpdatePhoto(ctx *gin.Context) {
 // @Failure      403  {object}  responses.ErrorMessage
 // @Failure      404  {object}  responses.ErrorMessage
 // @Failure      500  {object}  nil
-// @Router       /photos [delete]
+// @Router       /photos/{photoId} [delete]
 // @Security	 BearerAuth
 func DeletePhoto(ctx *gin.Context) {
 	photoID := ctx.Param("photoId")

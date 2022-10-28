@@ -14,6 +14,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// CreateSocialMedia godoc
+// @Summary      Create a social media
+// @Description  Create a social media associated with the logged in user.
+// @Tags         socialMedias
+// @Accept       json
+// @Produce      json
+// @Param        socialMedia body dto.SocialMedia true "JSON of the social media to be made."
+// @Success      201  {object}  responses.CreateSocialMedia
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /socialmedias [post]
+// @Security	 BearerAuth
 func CreateSocialMedia(ctx *gin.Context) {
 	var newSocmed dto.SocialMedia
 	if err := ctx.ShouldBindJSON(&newSocmed); err != nil {
@@ -43,6 +55,17 @@ func CreateSocialMedia(ctx *gin.Context) {
 	})
 }
 
+// GetSocialMedias godoc
+// @Summary      Get social medias
+// @Description  Get social medias.
+// @Tags         socialMedias
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  responses.GetAllSocialMedias
+// @Failure		 400 {object} responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /socialmedias [get]
+// @Security	 BearerAuth
 func GetAllSocialMedias(ctx *gin.Context) {
 	socmeds, err := database.GetAllSocialMedias()
 	if err != nil {
@@ -72,6 +95,21 @@ func GetAllSocialMedias(ctx *gin.Context) {
 	})
 }
 
+// UpdateSocialMedia godoc
+// @Summary      Update a social media
+// @Description  Update a social media associated with logged in user.
+// @Tags         socialMedias
+// @Accept       json
+// @Produce      json
+// @Param		 socialMediaId path uint true "ID number of the social media"
+// @Param        socialMedia body dto.SocialMedia true "New JSON of the social media."
+// @Success      200  {object}  responses.UpdateSocialMedia
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      403  {object}  responses.ErrorMessage
+// @Failure      404  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /socialmedias/{socialMediaId} [put]
+// @Security	 BearerAuth
 func UpdateSocialMedia(ctx *gin.Context) {
 	socialMediaID := ctx.Param("socialMediaId")
 	parsedID, err := strconv.ParseUint(socialMediaID, 10, 0)
@@ -119,6 +157,20 @@ func UpdateSocialMedia(ctx *gin.Context) {
 	})
 }
 
+// DeleteSocialMedia godoc
+// @Summary      Delete a social media
+// @Description  Delete a social media associated with logged in user.
+// @Tags         socialMedias
+// @Accept       json
+// @Produce      json
+// @Param		 socialMediaId path uint true "ID number of the social media to be deleted"
+// @Success      200  {object}  responses.Message
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      403  {object}  responses.ErrorMessage
+// @Failure      404  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /socialmedias/{socialMediaId} [delete]
+// @Security	 BearerAuth
 func DeleteSocialMedia(ctx *gin.Context) {
 	socmedID := ctx.Param("socialMediaId")
 	parsedID, err := strconv.ParseUint(socmedID, 10, 0)

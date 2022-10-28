@@ -7,9 +7,9 @@ import (
 )
 
 type CreateSocialMedia struct {
-	ID             uint      `json:"id"`
+	ID             uint      `json:"id" example:"1"`
 	Name           string    `json:"name"`
-	SocialMediaUrl string    `json:"social_media_url"`
+	SocialMediaUrl string    `json:"social_media_url" example:"https://subdomain.domain.dom.ge/path"`
 	UserID         uint      `json:"user_id"`
 	CreatedAt      time.Time `json:"created_at"`
 }
@@ -24,15 +24,15 @@ type GetSocialMedia struct {
 }
 
 type UpdateSocialMedia struct {
-	ID             uint      `json:"id"`
+	ID             uint      `json:"id" example:"1"`
 	Name           string    `json:"name"`
-	SocialMediaUrl string    `json:"social_media_url"`
-	UserID         uint      `json:"user_id"`
-	UpdatedAt      time.Time `json:"updated_at"`
+	SocialMediaUrl string    `json:"social_media_url" example:"https://subdomain.domain.dom.ge/path"`
+	UserID         uint      `json:"user_id" example:"1"`
+	UpdatedAt      time.Time `json:"updated_at" example:"2019-11-09T21:21:46+00:00"`
 }
 
 type UserSocialMedia struct {
-	ID       uint   `json:"id"`
+	ID       uint   `json:"id" example:"1"`
 	Username string `json:"username"`
 }
 

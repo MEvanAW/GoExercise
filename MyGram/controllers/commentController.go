@@ -21,7 +21,7 @@ import (
 // @Tags         comments
 // @Accept       json
 // @Produce      json
-// @Param        user body dto.Comment true "JSON of the comment to be made. Caption is not mandatory."
+// @Param        comment body dto.Comment true "JSON of the comment to be made. Caption is not mandatory."
 // @Success      201  {object}  responses.CreateComment
 // @Failure      400  {object}  responses.ErrorMessage
 // @Failure      500  {object}  nil
@@ -174,7 +174,7 @@ func UpdateComment(ctx *gin.Context) {
 // @Failure      403  {object}  responses.ErrorMessage
 // @Failure      404  {object}  responses.ErrorMessage
 // @Failure      500  {object}  nil
-// @Router       /comments [delete]
+// @Router       /comments/{commentId} [delete]
 // @Security	 BearerAuth
 func DeleteComment(ctx *gin.Context) {
 	commentID := ctx.Param("commentId")
